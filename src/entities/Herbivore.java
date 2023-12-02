@@ -1,21 +1,17 @@
 package entities;
 
+import world_map.Position;
+
 public class Herbivore extends Creature {
-    public Herbivore(char sprite, int health, int speed) {
-        super(sprite, health, speed);
+    private static final int HEALTH = 10;
+    private static final int SPEED = 3;
+
+    public Herbivore(Position pos) {
+        super(HEALTH, SPEED, pos);
     }
 
     @Override
-    void makeMove() {
+    public void makeMove() {
 
-    }
-
-    @Override
-    public String toString() {
-        return "Herbivore{" +
-                "health=" + health +
-                ", speed=" + speed +
-                ", sprite=" + sprite +
-                '}';
     }
 }

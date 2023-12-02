@@ -1,20 +1,15 @@
 package entities;
 
+import world_map.Position;
+
 public class Entity {
-    final char sprite;
+    Position position;
 
-    public Entity(char sprite) {
-        this.sprite = sprite;
+    public Entity(Position position) {
+        this.position = position;
     }
 
-    public char getSprite() {
-        return sprite;
-    }
-
-    @Override
-    public String toString() {
-        return "Entity{" +
-                "sprite=" + sprite +
-                '}';
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

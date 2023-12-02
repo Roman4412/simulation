@@ -1,11 +1,13 @@
 package entities;
 
+import world_map.Position;
+
 public abstract class Creature extends Entity {
     final int health;
     final int speed;
 
-    public Creature(char sprite, int health, int speed) {
-        super(sprite);
+    public Creature(int health, int speed, Position position) {
+        super(position);
         this.health = health;
         this.speed = speed;
     }
@@ -19,12 +21,4 @@ public abstract class Creature extends Entity {
         return speed;
     }
 
-    @Override
-    public String toString() {
-        return "Creature{" +
-                "health=" + health +
-                ", speed=" + speed +
-                ", sprite=" + sprite +
-                '}';
-    }
 }

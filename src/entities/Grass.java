@@ -1,4 +1,9 @@
 package entities;
 
-public class Grass {
+import world_map.Position;
+
+public class Grass extends Entity {
+    public Grass(Position position) {
+        super(position);
+    }
 }

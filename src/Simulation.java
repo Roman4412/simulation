@@ -1,3 +1,5 @@
+import world_map.WorldMap;
+
 public class Simulation {
     private long turn_counter = 0;
     private final WorldMap map;

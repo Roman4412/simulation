@@ -1,29 +1,25 @@
 package entities;
 
-public class Predator extends Creature {
-    final int attack;
 
-    public Predator(char sprite, int health, int speed, int attack) {
-        super(sprite, health, speed);
-        this.attack = attack;
+import world_map.Position;
+
+public class Predator extends Creature {
+    private static final int HEALTH = 15;
+    private static final int SPEED = 4;
+    private static final int ATTACK = 5;
+
+
+    public Predator(Position pos) {
+        super(HEALTH, SPEED, pos);
     }
 
     @Override
-    void makeMove() {
+    public void makeMove() {
 
     }
 
     public int getAttack() {
-        return attack;
+        return ATTACK;
     }
 
-    @Override
-    public String toString() {
-        return "Predator{" +
-                "attack=" + attack +
-                ", health=" + health +
-                ", speed=" + speed +
-                ", sprite=" + sprite +
-                '}';
-    }
 }
