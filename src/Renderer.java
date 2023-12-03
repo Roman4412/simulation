@@ -11,7 +11,7 @@ public class Renderer {
     private static final String ROCK = "\033[38;05;242m◼  ";
     private static final String GRASS = "\033[38;05;46m◼ ";
     private static final String TREE = "\033[38;05;28m◼ ";
-    private static final String LAND = "▢ ";
+    private static final String LAND = "▢  ";
     private static final String RESET = "\033[0m";
 
     public void printMapState(WorldMap map) {
@@ -23,7 +23,7 @@ public class Renderer {
             }
         }).collect(Collectors.toList());
         positions.forEach(p -> {
-            System.out.print(getSprite(checkEntityFromPosition(map, p)));
+            System.out.print(getSprite(checkEntityFromPosition(map, p)) + RESET);
             if(p.coordinateY == map.getSize()) {
                 System.out.println();
             }

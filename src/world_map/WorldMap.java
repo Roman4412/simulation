@@ -2,6 +2,7 @@ package world_map;
 
 import entities.Entity;
 import entities.Herbivore;
+import entities.Land;
 import entities.Rock;
 
 import java.util.*;
@@ -50,7 +51,7 @@ public class WorldMap {
         while (count < amount) {
             Position position = allPositions.get(random.nextInt(allPositions.size()));
             if (!map.containsKey(position)) {
-                map.put(position, new Rock(position));
+                map.put(position, new Land(position));
                 allPositions.remove(position);
                 count++;
             }
