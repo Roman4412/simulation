@@ -1,20 +1,20 @@
 package world_map;
 
 public class Position {
-    public final int coordinate_X;
-    public final int coordinate_Y;
+    public final int coordinateX;
+    public final int coordinateY;
 
-    public Position(int coordinate_X, int coordinate_Y) {
-        this.coordinate_X = coordinate_X;
-        this.coordinate_Y = coordinate_Y;
+    public Position(int coordinateX, int coordinateY) {
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
     }
 
     @Override
     public String toString() {
         return "Position{"
-                + coordinate_X
+                + coordinateX
                 + " "
-                + coordinate_Y
+                + coordinateY
                 + '}';
     }
 }
