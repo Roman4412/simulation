@@ -1,9 +1,6 @@
 package world_map;
 
-import entities.Entity;
-import entities.Herbivore;
-import entities.Land;
-import entities.Rock;
+import entities.*;
 
 import java.util.*;
 
@@ -11,12 +8,18 @@ public class WorldMap {
     private final List<Position> allPositions;
     private Map<Position, Entity> map;
     private final int size;
-
+    /*
+    setPred()
+    setHerb()
+    setGras()
+    setBarriers()
+    */
 
     public WorldMap(int size) {
         this.allPositions = calculateAllPositions(size);
         this.map = new HashMap<>();
         this.size = size;
+
     }
 
     public List calculateAllPositions(int size) {
@@ -35,7 +38,17 @@ public class WorldMap {
 
     Random random = new Random();
 
-    public void setHerbivoresOnMap(int amount) {
+    public void setEntities(int predators, int herbivores, int grass, int rocks, int trees) {
+        int sum = predators+herbivores+grass+rocks+trees;
+        setPredator(predators);
+        setHerbivore(herbivores);
+        setGrass(grass);
+        setRock(rocks);
+        setTree(trees);
+        setLand(size*size - sum);
+    }
+
+    public void setHerbivore(int amount) {
         int count = 0;
         while (count < amount) {
             Position position = allPositions.get(random.nextInt(allPositions.size()));
@@ -46,7 +59,8 @@ public class WorldMap {
             }
         }
     }
-    public void setTest(int amount) {
+
+    public void setLand(int amount) {
         int count = 0;
         while (count < amount) {
             Position position = allPositions.get(random.nextInt(allPositions.size()));
@@ -58,10 +72,67 @@ public class WorldMap {
         }
     }
 
+    public void setPredator(int amount) {
+        int count = 0;
+        while (count < amount) {
+            Position position = allPositions.get(random.nextInt(allPositions.size()));
+            if (!map.containsKey(position)) {
+                map.put(position, new Predator(position));
+                allPositions.remove(position);
+                count++;
+            }
+        }
+    }
+
+    public void setGrass(int amount) {
+        int count = 0;
+        while (count < amount) {
+            Position position = allPositions.get(random.nextInt(allPositions.size()));
+            if (!map.containsKey(position)) {
+                map.put(position, new Grass(position));
+                allPositions.remove(position);
+                count++;
+            }
+        }
+    }
+
+    public void setTree(int amount) {
+        int count = 0;
+        while (count < amount) {
+            Position position = allPositions.get(random.nextInt(allPositions.size()));
+            if (!map.containsKey(position)) {
+                map.put(position, new Tree(position));
+                allPositions.remove(position);
+                count++;
+            }
+        }
+    }
+
+    public void setRock(int amount) {
+        int count = 0;
+        while (count < amount) {
+            Position position = allPositions.get(random.nextInt(allPositions.size()));
+            if (!map.containsKey(position)) {
+                map.put(position, new Rock(position));
+                allPositions.remove(position);
+                count++;
+            }
+        }
+    }
+
     public Map<Position, Entity> getMap() {
         return map;
     }
-
+    public Entity getEntityFromPosition(Position pos)
+    {
+        return map.get(pos);
+    }
+    public void setEntityToPos(Position pos, Herbivore h) {
+        map.put(pos, h);
+    }
+    public void setEntityToPos(Position pos, Grass g) {
+        map.put(pos, g);
+    }
     public List<Position> getAllPositions() {
         return allPositions;
     }

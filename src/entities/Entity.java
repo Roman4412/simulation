@@ -3,7 +3,7 @@ package entities;
 import world_map.Position;
 
 public class Entity {
-    Position position;
+    public Position position;
 
     public Entity(Position position) {
         this.position = position;

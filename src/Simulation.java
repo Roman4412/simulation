@@ -1,6 +1,20 @@
 import world_map.WorldMap;
 
 public class Simulation {
+    /*
+    init:
+    setup creatures
+    setup static obj / land, rock. tree, grass
+
+    turn:
+    creatures move
+    generate grass
+    delete grass/herb
+
+
+
+
+     */
     private long turn_counter = 0;
     private final WorldMap map;
     private final Renderer renderer;

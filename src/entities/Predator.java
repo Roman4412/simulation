@@ -2,6 +2,9 @@ package entities;
 
 
 import world_map.Position;
+import world_map.WorldMap;
+
+import java.util.Map;
 
 public class Predator extends Creature {
     private static final int HEALTH = 15;
@@ -14,7 +17,7 @@ public class Predator extends Creature {
     }
 
     @Override
-    public void makeMove() {
+    public void makeMove(WorldMap map) {
 
     }
 
