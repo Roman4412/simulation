@@ -17,16 +17,16 @@ public class Renderer {
 
     public void render(WorldMap map) {
         List<Position> positions = map.getMap().keySet().stream().sorted((a, b) -> {
-            if (a.x == b.x) {
-                return a.y - b.y;
+            if (a.v == b.v) {
+                return a.h - b.h;
             } else {
-                return a.x - b.x;
+                return a.v - b.v;
             }
         }).collect(Collectors.toList());
 
         positions.forEach(p -> {
             System.out.print(getSprite(map.getEntityFromPosition(p)) + SEPARATOR + RESET);
-            if (p.y == map.getSize()) {
+            if (p.h == map.getSize()) {
                 System.out.println();
             }
         });

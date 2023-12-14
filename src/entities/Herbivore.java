@@ -16,39 +16,46 @@ public class Herbivore extends Creature {
 
     @Override
     public void makeMove(WorldMap map) {
-
+        /*
+        ищет еду в радиусе 5-ти клеток,
+        если увидел еду - делает шаг к ней
+        если не нашел еду за свой ход, двигается в рандомную клетку
+        */
     }
 
-    public Position findFood(WorldMap map) {
-        Queue<Position> closed = new ArrayDeque<>();
-        Queue<Position> open = new ArrayDeque<>(getNeighbor(position, closed));
-        closed.add(position);
-        while (!closed.isEmpty()) {
-            while (!open.isEmpty()) {
-                Position elmnt = open.poll();
-                closed.add(elmnt);
-                if (map.getEntityFromPosition(elmnt) instanceof Grass) {
-                    return elmnt;
-                }
+    public Position findFoodPosition(WorldMap map) {
+        List<Position> processed = new ArrayList<>();
+        Queue<Position> current = new ArrayDeque<>(List.of(position));
+        while (!current.isEmpty()) {
+            Position cell = current.poll();
+            System.out.println(cell);
+            if (map.getEntityFromPosition(cell) instanceof Grass) {
+                return cell;
+                // return nearest cell to grass
+            } else {
+                processed.add(cell);
+                current.addAll(calcAdjacentCells(processed, cell));
             }
-            open.addAll(getNeighbor(closed.poll(), closed));
         }
+        // return random nearest cell
         return null;
     }
 
-    public List<Position> getNeighbor(Position position, Queue closed) {
-        // TODO add constraints
-        List<Position> result = new ArrayList<>();
-        result.add(new Position(position.x + 1, position.y));
-        result.add(new Position(position.x - 1, position.y));
-        result.add(new Position(position.x, position.y + 1));
-        result.add(new Position(position.x, position.y - 1));
-        result.add(new Position(position.x + 1, position.y + 1));
-        result.add(new Position(position.x + 1, position.y - 1));
-        result.add(new Position(position.x - 1, position.y + 1));
-        result.add(new Position(position.x - 1, position.y - 1));
-        result.removeIf(closed::contains);
-        return result;
+    // return new open queue
+    public List<Position> calcAdjacentCells(List<Position> processed, Position cell) {
+        // TODO limit to map size
+        // TODO method ignores barriers
+        List<Position> adjacentCells = new ArrayList<>();
+        adjacentCells.add(new Position(cell.v + 1, cell.h));
+        adjacentCells.add(new Position(cell.v - 1, cell.h));
+        adjacentCells.add(new Position(cell.v, cell.h + 1));
+        adjacentCells.add(new Position(cell.v, cell.h - 1));
+        adjacentCells.removeIf(processed::contains);
+        processed.addAll(adjacentCells);
+        return adjacentCells;
     }
 
+    public static int calculateDistanceBetweenCells(Position current, Position target) {
+        return Math.abs(current.v - target.v) + Math.abs(current.h - target.h);
+    }
 }

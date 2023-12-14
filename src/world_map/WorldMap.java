@@ -133,6 +133,12 @@ public class WorldMap {
     public void setEntityToPos(Position pos, Grass g) {
         map.put(pos, g);
     }
+    public void setEntityToPos(Position pos, Tree t) {
+        map.put(pos, t);
+    }
+    public void setEntityToPos(Position pos, Land l) {
+        map.put(pos, l);
+    }
     public List<Position> getAllPositions() {
         return allPositions;
     }
