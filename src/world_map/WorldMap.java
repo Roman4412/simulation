@@ -9,10 +9,8 @@ public class WorldMap {
     private Map<Position, Entity> map;
     private final int size;
     /*
-    setPred()
-    setHerb()
-    setGras()
-    setBarriers()
+    setToPos methods - are temporary methods.
+    Their functionality will be redesigned using random.
     */
 
     public WorldMap(int size) {
@@ -138,6 +136,10 @@ public class WorldMap {
     }
     public void setEntityToPos(Position pos, Land l) {
         map.put(pos, l);
+    }
+
+    public void swap(Entity e1, Entity e2) {
+
     }
     public List<Position> getAllPositions() {
         return allPositions;

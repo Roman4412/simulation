@@ -1,7 +1,7 @@
 import entities.Grass;
 import entities.Herbivore;
-import entities.Tree;
 import world_map.Position;
+import world_map.Renderer;
 import world_map.WorldMap;
 
 
@@ -17,8 +17,8 @@ public class Main {
 */
         Position herbPos = new Position(5, 5);
         Herbivore testHerb = new Herbivore(herbPos);
-        Position grassPos = new Position(8, 9);
-        Position grassPos1 = new Position(4, 8);
+        Position grassPos = new Position(4, 7);
+        Position grassPos1 = new Position(10, 10);
         Grass testGrass = new Grass(grassPos);
         Grass testGrass1 = new Grass(grassPos1);
 
@@ -55,9 +55,19 @@ public class Main {
         renderer.render(map);
         System.out.println();
         System.out.println();
-        System.out.println(testHerb.findFoodPosition(map));
+        testHerb.makeMove(map);
         renderer.render(map);
-
+        testHerb.makeMove(map);
+        renderer.render(map);
+        testHerb.makeMove(map);
+        renderer.render(map);
+        testHerb.makeMove(map);
+        renderer.render(map);
+        testHerb.makeMove(map);
+        renderer.render(map);
+        testHerb.makeMove(map);
+        renderer.render(map);
+        System.out.print("\033[H\033[J");
 
 
     }

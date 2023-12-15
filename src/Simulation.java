@@ -1,3 +1,4 @@
+import world_map.Renderer;
 import world_map.WorldMap;
 
 public class Simulation {

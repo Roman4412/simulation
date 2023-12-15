@@ -1,3 +1,5 @@
+package world_map;
+
 import entities.Entity;
 import world_map.Position;
 import world_map.WorldMap;
