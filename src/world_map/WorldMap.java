@@ -37,13 +37,13 @@ public class WorldMap {
     Random random = new Random();
 
     public void setEntities(int predators, int herbivores, int grass, int rocks, int trees) {
-        int sum = predators+herbivores+grass+rocks+trees;
+        int sum = predators + herbivores + grass + rocks + trees;
         setPredator(predators);
         setHerbivore(herbivores);
         setGrass(grass);
         setRock(rocks);
         setTree(trees);
-        setLand(size*size - sum);
+        setLand(size * size - sum);
     }
 
     public void setHerbivore(int amount) {
@@ -121,26 +121,42 @@ public class WorldMap {
     public Map<Position, Entity> getMap() {
         return map;
     }
-    public Entity getEntityFromPosition(Position pos)
-    {
+
+    public Entity getEntityFromPosition(Position pos) {
         return map.get(pos);
     }
+
     public void setEntityToPos(Position pos, Herbivore h) {
+        h.position = pos;
         map.put(pos, h);
     }
+
     public void setEntityToPos(Position pos, Grass g) {
+        g.position = pos;
         map.put(pos, g);
     }
+
     public void setEntityToPos(Position pos, Tree t) {
+        t.position = pos;
         map.put(pos, t);
     }
+
     public void setEntityToPos(Position pos, Land l) {
+        l.position = pos;
         map.put(pos, l);
     }
 
-    public void swap(Entity e1, Entity e2) {
+    public void swapEntities(Position p1, Position p2) {
+        Entity e1 = map.get(p1);
+        Entity e2 = map.get(p2);
 
+        map.replace(p1, e2);
+        e2.changePosition(p1);
+
+        map.replace(p2, e1);
+        e1.changePosition(p2);
     }
+
     public List<Position> getAllPositions() {
         return allPositions;
     }

@@ -15,14 +15,14 @@ public class Renderer {
     private static final String TREE = "\033[38;05;28m◼";
     private static final String LAND = "▢";
     private static final String RESET = "\033[0m";
-    private static final String SEPARATOR ="  ";
+    private static final String SEPARATOR = "  ";
 
     public void render(WorldMap map) {
-        List<Position> positions = map.getMap().keySet().stream().sorted((a, b) -> {
-            if (a.v == b.v) {
-                return a.h - b.h;
+        List<Position> positions = map.getMap().keySet().stream().sorted((p1, p2) -> {
+            if (p1.v == p2.v) {
+                return p1.h - p2.h;
             } else {
-                return a.v - b.v;
+                return p1.v - p2.v;
             }
         }).collect(Collectors.toList());
 
@@ -33,7 +33,6 @@ public class Renderer {
             }
         });
     }
-
 
 
     private String getSprite(Entity entity) {

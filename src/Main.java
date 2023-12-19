@@ -1,5 +1,6 @@
 import entities.Grass;
 import entities.Herbivore;
+import entities.Tree;
 import world_map.Position;
 import world_map.Renderer;
 import world_map.WorldMap;
@@ -8,7 +9,7 @@ import world_map.WorldMap;
 public class Main {
 
     public static void main(String[] args) {
-        WorldMap map = new WorldMap(30);
+        WorldMap map = new WorldMap(10);
 
 
         /*map.setEntities(0,100,100,0,0);
@@ -18,9 +19,11 @@ public class Main {
         Position herbPos = new Position(5, 5);
         Herbivore testHerb = new Herbivore(herbPos);
         Position grassPos = new Position(4, 7);
-        Position grassPos1 = new Position(10, 10);
+        Position treePos = new Position(5, 6);
+        Position treePos1 = new Position(4, 5);
         Grass testGrass = new Grass(grassPos);
-        Grass testGrass1 = new Grass(grassPos1);
+        Tree testTree = new Tree(treePos);
+        Tree testTree1 = new Tree(treePos1);
 
         /*Position p1= new Position(5,6);// -1.2 шагов до цели 3
         Position p2= new Position(5,4);// -1,4 шагов до цели 5
@@ -48,15 +51,17 @@ public class Main {
 
         map.setEntityToPos(herbPos, testHerb);
         map.setEntityToPos(grassPos, testGrass);
-        map.setEntityToPos(grassPos1, testGrass1);
+        map.setEntityToPos(treePos, testTree);
+        map.setEntityToPos(treePos1, testTree1);
 
-        map.setLand(897);
+        map.setLand(96);
         Renderer renderer = new Renderer();
         renderer.render(map);
         System.out.println();
         System.out.println();
         testHerb.makeMove(map);
         renderer.render(map);
+
         testHerb.makeMove(map);
         renderer.render(map);
         testHerb.makeMove(map);
@@ -65,9 +70,7 @@ public class Main {
         renderer.render(map);
         testHerb.makeMove(map);
         renderer.render(map);
-        testHerb.makeMove(map);
-        renderer.render(map);
-        System.out.print("\033[H\033[J");
+
 
 
     }
