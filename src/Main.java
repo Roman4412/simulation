@@ -2,7 +2,6 @@ import entities.Grass;
 import entities.Herbivore;
 import entities.Tree;
 import world_map.Position;
-import world_map.Renderer;
 import world_map.WorldMap;
 
 
@@ -55,21 +54,21 @@ public class Main {
         map.setEntityToPos(treePos1, testTree1);
 
         map.setLand(96);
-        Renderer renderer = new Renderer();
-        renderer.render(map);
+        SimulationMapRenderer simulationMapRenderer = new SimulationMapRenderer();
+        simulationMapRenderer.render(map);
         System.out.println();
         System.out.println();
         testHerb.makeMove(map);
-        renderer.render(map);
+        simulationMapRenderer.render(map);
 
         testHerb.makeMove(map);
-        renderer.render(map);
+        simulationMapRenderer.render(map);
         testHerb.makeMove(map);
-        renderer.render(map);
+        simulationMapRenderer.render(map);
         testHerb.makeMove(map);
-        renderer.render(map);
+        simulationMapRenderer.render(map);
         testHerb.makeMove(map);
-        renderer.render(map);
+        simulationMapRenderer.render(map);
 
 
 

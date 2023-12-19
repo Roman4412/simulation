@@ -1,4 +1,3 @@
-import world_map.Renderer;
 import world_map.WorldMap;
 
 public class Simulation {
@@ -18,13 +17,13 @@ public class Simulation {
      */
     private long turn_counter = 0;
     private final WorldMap map;
-    private final Renderer renderer;
+    private final SimulationMapRenderer simulationMapRenderer;
     private final Actions[] initActions;
     private final Actions[] turnActions;
 
-    public Simulation(WorldMap map, Renderer renderer, Actions[] initActions, Actions[] turnActions) {
+    public Simulation(WorldMap map, SimulationMapRenderer simulationMapRenderer, Actions[] initActions, Actions[] turnActions) {
         this.map = map;
-        this.renderer = renderer;
+        this.simulationMapRenderer = simulationMapRenderer;
         this.initActions = initActions;
         this.turnActions = turnActions;
     }

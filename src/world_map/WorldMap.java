@@ -127,22 +127,22 @@ public class WorldMap {
     }
 
     public void setEntityToPos(Position pos, Herbivore h) {
-        h.position = pos;
+        h.changePosition(pos);
         map.put(pos, h);
     }
 
     public void setEntityToPos(Position pos, Grass g) {
-        g.position = pos;
+        g.changePosition(pos);
         map.put(pos, g);
     }
 
     public void setEntityToPos(Position pos, Tree t) {
-        t.position = pos;
+        t.changePosition(pos);
         map.put(pos, t);
     }
 
     public void setEntityToPos(Position pos, Land l) {
-        l.position = pos;
+        l.changePosition(pos);
         map.put(pos, l);
     }
 

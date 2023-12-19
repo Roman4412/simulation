@@ -1,5 +1,3 @@
-package world_map;
-
 import entities.Entity;
 import world_map.Position;
 import world_map.WorldMap;
@@ -7,7 +5,7 @@ import world_map.WorldMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Renderer {
+public class SimulationMapRenderer {
     private static final String PREDATOR = "\033[5;38;05;196m◼";
     private static final String HERBIVORE = "\033[38;05;226m◼";
     private static final String ROCK = "\033[38;05;242m◼";
