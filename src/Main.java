@@ -15,9 +15,9 @@ public class Main {
         map.setLand(100);
         map.setEntities(15, 20, 20, 15, 30);
 */
-        Position herbPos = new Position(5, 5);
+        Position herbPos = new Position(1, 1);
         Herbivore testHerb = new Herbivore(herbPos);
-        Position grassPos = new Position(4, 7);
+        Position grassPos = new Position(10, 10);
         Position treePos = new Position(5, 6);
         Position treePos1 = new Position(4, 5);
         Grass testGrass = new Grass(grassPos);
@@ -61,14 +61,14 @@ public class Main {
         testHerb.makeMove(map);
         simulationMapRenderer.render(map);
 
+
         testHerb.makeMove(map);
         simulationMapRenderer.render(map);
         testHerb.makeMove(map);
         simulationMapRenderer.render(map);
         testHerb.makeMove(map);
         simulationMapRenderer.render(map);
-        testHerb.makeMove(map);
-        simulationMapRenderer.render(map);
+
 
 
 

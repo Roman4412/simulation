@@ -41,7 +41,6 @@ public class Herbivore extends Creature {
         }
         Position cellForTurn = path.poll();
         if(map.getEntityFromPosition(cellForTurn) instanceof Grass) {
-
             Position tmp = position;
             map.setEntityToPos(cellForTurn,this);
             map.setEntityToPos(tmp,new Land(tmp));
@@ -57,12 +56,14 @@ public class Herbivore extends Creature {
         while (!current.isEmpty()) {
             Position cell = current.poll();
             if (map.getEntityFromPosition(cell) instanceof Grass) {
+                System.out.println("findFoodPosition: " + cell);
                 return cell;
             } else {
                 processed.add(cell);
                 current.addAll(findAdjacentCells(processed, cell, map));
             }
         }
+        System.out.println("findFoodPosition: null");
         return null;
     }
 
@@ -89,14 +90,12 @@ public class Herbivore extends Creature {
             open.addAll(findAdjacentCells(processed, cell, map));
         }
 
-        System.out.println("Path: " + path);
+        System.out.println("findPath: " + path);
         return path;
     }
 
     // return new open queue
     public List<Position> findAdjacentCells(List<Position> processed, Position cell, WorldMap map) {
-        // TODO limit to map size
-        // TODO method ignores barriers  +FIX
         List<Position> cells2 = List.of(
                 new Position(cell.v + 1, cell.h),
                 new Position(cell.v - 1, cell.h),
@@ -106,8 +105,8 @@ public class Herbivore extends Creature {
         List<Position> result = cells2.stream()
                 .filter(
                         p -> !processed.contains(p)
-                                && p.v < map.getSize() && p.v > 1
-                                && p.h < map.getSize() && p.h > 1
+                                && p.v <= map.getSize() && p.v > 0
+                                && p.h <= map.getSize() && p.h > 0
                                 && !(map.getEntityFromPosition(p) instanceof Tree)
                                 && !(map.getEntityFromPosition(p) instanceof Rock)
                                 && !(map.getEntityFromPosition(p) instanceof Predator)
@@ -116,7 +115,6 @@ public class Herbivore extends Creature {
                 )
                 .collect(Collectors.toList());
         processed.addAll(cells2);
-        System.out.println("findAdjacentCells: " + result);
         return result;
 
 
