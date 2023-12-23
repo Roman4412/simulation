@@ -29,24 +29,22 @@ public class Herbivore extends Creature {
         makeMove() - через А* вычисляем оптимальный путь
         PriorityQueue, в качестве компаратора разница между манхэннтонским расстоянием элементов
         */
+        //TODO необходимо проверять путь каждый ход т к
+        // может возникнуть ситуация, когда 2 существа попытаются занять одну клетку
 
-        /*
-            Неверно рассчитывает путь если встречаются препятствия.
-            На текущий момент алгоритм просматривает только один кратчайший путь.
-            Необходимо просматривать несколько путей, затем вычислять кратчайший и именно его возвращать из функции
-
-        */
         if (path.isEmpty()) {
+            System.out.println("old position: " + this.position);
             path = findPath(map);
         }
         Position cellForTurn = path.poll();
-        if(map.getEntityFromPosition(cellForTurn) instanceof Grass) {
+        if (map.getEntityFromPosition(cellForTurn) instanceof Grass) {
             Position tmp = position;
-            map.setEntityToPos(cellForTurn,this);
-            map.setEntityToPos(tmp,new Land(tmp));
+            map.setEntityToPos(cellForTurn, this);
+            map.setEntityToPos(tmp, new Land(tmp));
 
         } else {
             map.swapEntities(position, cellForTurn);
+            System.out.println("new position: " + this.position);
         }
     }
 
@@ -68,65 +66,60 @@ public class Herbivore extends Creature {
     }
 
     public Queue<Position> findPath(WorldMap map) {
-        Position target = findFoodPosition(map);
-        Queue<Position> path = new ArrayDeque<>();
-        List<Position> processed = new ArrayList<>();
-        Queue<Position> open = new PriorityQueue<>((a, b) -> {
-            int aManhDistance = Math.abs(a.v - target.v) + Math.abs(a.h - target.h);
-            int bManhDistance = Math.abs(b.v - target.v) + Math.abs(b.h - target.h);
-            return aManhDistance - bManhDistance;
-        });
+        //вычисляет рандомный путь если еды нет
+        if (findFoodPosition(map) == null) {
+            Random random = new Random();
+            List<Position> cellsForStep = findAdjacentCells(new ArrayList<>(), position, map);
+            Queue<Position> randomPath = new ArrayDeque<>();
+            randomPath.add(cellsForStep.get(random.nextInt(cellsForStep.size())));
+            System.out.println("randomCell: " + randomPath.peek());
+            return randomPath;
+        } else {
+            Position target = findFoodPosition(map);
+            Queue<Position> pathToFood = new ArrayDeque<>();
+            List<Position> processed = new ArrayList<>();
+            Queue<Position> open = new PriorityQueue<>((a, b) -> {
+                int aManhDistance = Math.abs(a.v - target.v) + Math.abs(a.h - target.h);
+                int bManhDistance = Math.abs(b.v - target.v) + Math.abs(b.h - target.h);
+                return aManhDistance - bManhDistance;
+            });
 
-        open.add(position);
-        while (!open.isEmpty()) {
-            Position cell = open.poll();
-            if (!path.contains(cell) && cell != position) {
-                path.add(cell);
+            open.add(position);
+            while (!open.isEmpty()) {
+                Position cell = open.poll();
+                if (!pathToFood.contains(cell) && cell != position) {
+                    pathToFood.add(cell);
+                }
+                if (cell.equals(target)) {
+                    break;
+                }
+                processed.add(cell);
+                open.addAll(findAdjacentCells(processed, cell, map));
             }
-            if (cell.equals(target)) {
-                break;
-            }
-            processed.add(cell);
-            open.addAll(findAdjacentCells(processed, cell, map));
+
+            System.out.println("findPath: " + pathToFood);
+            return pathToFood;
         }
-
-        System.out.println("findPath: " + path);
-        return path;
     }
 
-    // return new open queue
     public List<Position> findAdjacentCells(List<Position> processed, Position cell, WorldMap map) {
-        List<Position> cells2 = List.of(
+        List<Position> cellsForStep = List.of(
                 new Position(cell.v + 1, cell.h),
                 new Position(cell.v - 1, cell.h),
                 new Position(cell.v, cell.h + 1),
                 new Position(cell.v, cell.h - 1)
         );
-        List<Position> result = cells2.stream()
+        List<Position> result = cellsForStep.stream()
                 .filter(
                         p -> !processed.contains(p)
                                 && p.v <= map.getSize() && p.v > 0
                                 && p.h <= map.getSize() && p.h > 0
-                                && !(map.getEntityFromPosition(p) instanceof Tree)
-                                && !(map.getEntityFromPosition(p) instanceof Rock)
-                                && !(map.getEntityFromPosition(p) instanceof Predator)
-                                && !(map.getEntityFromPosition(p) instanceof Herbivore)
-
+                                && map.getEntityFromPosition(p) instanceof Land
+                                || map.getEntityFromPosition(p) instanceof Grass
                 )
                 .collect(Collectors.toList());
-        processed.addAll(cells2);
+        processed.addAll(result);
+        //System.out.println("findAdjacentCells: " + result);
         return result;
-
-
-        // stable version
-
-        /*List<Position> cells = new ArrayList<>();
-        cells.add(new Position(cell.v + 1, cell.h));
-        cells.add(new Position(cell.v - 1, cell.h));
-        cells.add(new Position(cell.v, cell.h + 1));
-        cells.add(new Position(cell.v, cell.h - 1));
-        cells.removeIf(processed::contains);
-        processed.addAll(cells);
-        return cells;*/
     }
 }

@@ -5,26 +5,34 @@ import entities.*;
 import java.util.*;
 
 public class WorldMap {
+    Random random = new Random();
+    private final int size;
+
     private final List<Position> allPositions;
     private Map<Position, Entity> map;
-    private final int size;
     /*
-    setToPos methods - are temporary methods.
-    Their functionality will be redesigned using random.
+    setEntityToPos methods - are temporary methods.
+    Their will be deleted
     */
 
+
     public WorldMap(int size) {
-        this.allPositions = calculateAllPositions(size);
-        this.map = new HashMap<>();
+        //TODO убрать метод из конструктора.
+        // Мб генерировать позиции в процессе добавления элементов и
+        // получать доступные позиции через keySet?
+        // шаблон builder для сборки worldMap?
         this.size = size;
+        this.map = new HashMap<>();
+        this.allPositions = calculateAllPositions();
 
     }
 
-    public List calculateAllPositions(int size) {
+    public List<Position> calculateAllPositions() {
+        int totalCells = size*size;
         List<Position> positions = new ArrayList<>();
         int counterX = 1;
         int counterY = 1;
-        for (int x = 0; x < size * size; x++) {
+        for (int x = 0; x < totalCells; x++) {
             if (counterY > size) {
                 counterX++;
                 counterY = 1;
@@ -34,29 +42,22 @@ public class WorldMap {
         return positions;
     }
 
-    Random random = new Random();
 
     public void setEntities(int predators, int herbivores, int grass, int rocks, int trees) {
-        int sum = predators + herbivores + grass + rocks + trees;
+        int totalCells = size * size;
+        int totalEntities = predators + herbivores + grass + rocks + trees;
+        if (totalCells < totalEntities) {
+            throw new RuntimeException("Существ больше, чем клеток на карте");
+        }
+
         setPredator(predators);
         setHerbivore(herbivores);
         setGrass(grass);
         setRock(rocks);
         setTree(trees);
-        setLand(size * size - sum);
+        setLand(size * size - totalEntities);
     }
 
-    public void setHerbivore(int amount) {
-        int count = 0;
-        while (count < amount) {
-            Position position = allPositions.get(random.nextInt(allPositions.size()));
-            if (!map.containsKey(position)) {
-                map.put(position, new Herbivore(position));
-                allPositions.remove(position);
-                count++;
-            }
-        }
-    }
 
     public void setLand(int amount) {
         int count = 0;
@@ -64,6 +65,21 @@ public class WorldMap {
             Position position = allPositions.get(random.nextInt(allPositions.size()));
             if (!map.containsKey(position)) {
                 map.put(position, new Land(position));
+                allPositions.remove(position);
+                count++;
+            }
+        }
+       /* for (Position position : allPositions) {
+            map.put(position, new Land(position));
+        }*/
+    }
+
+    public void setHerbivore(int amount) {
+        int count = 0;
+        while (count < amount) {
+            Position position = allPositions.get(random.nextInt(allPositions.size()));
+            if (allPositions.contains(position)) {
+                map.put(position, new Herbivore(position));
                 allPositions.remove(position);
                 count++;
             }
@@ -152,7 +168,6 @@ public class WorldMap {
 
         map.replace(p1, e2);
         e2.changePosition(p1);
-
         map.replace(p2, e1);
         e1.changePosition(p2);
     }

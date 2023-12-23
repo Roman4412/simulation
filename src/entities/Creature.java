@@ -15,7 +15,8 @@ public abstract class Creature extends Entity {
         this.speed = speed;
     }
 
-    abstract void makeMove(WorldMap map);
+    public abstract void makeMove(WorldMap map);
+
     public int getHealth() {
         return health;
     }

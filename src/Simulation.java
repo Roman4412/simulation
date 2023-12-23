@@ -3,13 +3,22 @@ import world_map.WorldMap;
 public class Simulation {
     /*
     init:
-    setup creatures
-    setup static obj / land, rock. tree, grass
+    create map
+    generate and setup:
+        generateHerbivores
+        generatePredators
+        generateRocks
+        generateTrees
+        generateGrass
+        generateLand
+
 
     turn:
-    creatures move
-    generate grass
-    delete grass/herb
+    allMakeMove()
+    checkResources() {
+       generateGrass() if < 10
+       generateHerbivores() if < 10
+    }
 
 
 
@@ -17,19 +26,21 @@ public class Simulation {
      */
     private long turn_counter = 0;
     private final WorldMap map;
-    private final SimulationMapRenderer simulationMapRenderer;
-    private final Actions[] initActions;
-    private final Actions[] turnActions;
+    private final SimulationMapRenderer renderer;
+    private final Action[] initActions;
+    private final Action[] turnActions;
 
-    public Simulation(WorldMap map, SimulationMapRenderer simulationMapRenderer, Actions[] initActions, Actions[] turnActions) {
+    public Simulation(WorldMap map, SimulationMapRenderer renderer, Action[] initActions, Action[] turnActions) {
         this.map = map;
-        this.simulationMapRenderer = simulationMapRenderer;
+        this.renderer = renderer;
         this.initActions = initActions;
         this.turnActions = turnActions;
     }
 
     public void startSimulation() {
-
+        while (true) {
+            renderer.render(map);
+        }
     }
 
     public void pauseSimulation() {
