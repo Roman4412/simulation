@@ -26,7 +26,7 @@ public class SimulationMapRenderer {
                         return p1.v - p2.v;
                     }
                 }).forEach(p -> {
-                    System.out.print(getSprite(map.getEntityFromPosition(p)) + SEPARATOR + RESET);
+                    System.out.print(getSprite(map.getMap().get(p)) + SEPARATOR + RESET);
                     if (p.h == map.getSize()) {
                         System.out.println();
                     }

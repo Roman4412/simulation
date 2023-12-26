@@ -138,10 +138,6 @@ public class WorldMap {
         return map;
     }
 
-    public Entity getEntityFromPosition(Position pos) {
-        return map.get(pos);
-    }
-
     public void setEntityToPos(Position pos, Herbivore h) {
         h.changePosition(pos);
         map.put(pos, h);

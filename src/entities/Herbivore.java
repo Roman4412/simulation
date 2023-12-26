@@ -17,9 +17,8 @@ public class Herbivore extends Creature {
     @Override
     public void makeMove(WorldMap map) {
         Position cellForTurn = findPath(map, findFoodPosition(map)).poll();
-        if (map.getEntityFromPosition(cellForTurn) instanceof Grass) {
+        if (map.getMap().get(cellForTurn) instanceof Grass) {
             Position tmp = position;
-
             map.setEntityToPos(cellForTurn, this);
             map.setEntityToPos(tmp, new Land(tmp));
         } else {
@@ -32,7 +31,7 @@ public class Herbivore extends Creature {
         Queue<Position> current = new ArrayDeque<>(List.of(position));
         while (!current.isEmpty()) {
             Position cell = current.poll();
-            if (map.getEntityFromPosition(cell) instanceof Grass) {
+            if (map.getMap().get(cell) instanceof Grass) {
                 return cell;
             } else {
                 processed.add(cell);
@@ -87,8 +86,8 @@ public class Herbivore extends Creature {
                         p -> !processed.contains(p)
                                 && p.v <= map.getSize() && p.v > 0
                                 && p.h <= map.getSize() && p.h > 0
-                                && map.getEntityFromPosition(p) instanceof Land
-                                || map.getEntityFromPosition(p) instanceof Grass
+                                && map.getMap().get(p) instanceof Land
+                                || map.getMap().get(p) instanceof Grass
                 )
                 .collect(Collectors.toList());
         processed.addAll(result);
