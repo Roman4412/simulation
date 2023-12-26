@@ -12,4 +12,8 @@ public class Entity {
     public void changePosition(Position position) {
         this.position = position;
     }
+
+    public Position getPosition() {
+        return position;
+    }
 }

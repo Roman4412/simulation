@@ -7,45 +7,28 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Herbivore extends Creature {
+    private int herb_counter = 0;
     private static final int HEALTH = 10;
     private static final int SPEED = 1;
-    private Queue<Position> path = new ArrayDeque<>();
 
     public Herbivore(Position pos) {
         super(HEALTH, SPEED, pos);
+        herb_counter++;
     }
 
     @Override
     public void makeMove(WorldMap map) {
-        /*
-        ищет еду в радиусе 5-ти клеток,
-        если увидел еду - делает шаг к ней
-        если не нашел еду за свой ход, двигается в рандомную клетку
-
-        finFood() - в двойном цикле сканируем видимую для животного область
-                    и ищем всю еду в этой  области
-                    возвращаем ближайшую еду
-
-        makeMove() - через А* вычисляем оптимальный путь
-        PriorityQueue, в качестве компаратора разница между манхэннтонским расстоянием элементов
-        */
-        //TODO необходимо проверять путь каждый ход т к
-        // может возникнуть ситуация, когда 2 существа попытаются занять одну клетку
-
-        if (path.isEmpty()) {
-            //System.out.println("old position: " + this.position);
-            path = findPath(map);
-        }
-        Position cellForTurn = path.poll();
+        Position cellForTurn = findPath(map, findFoodPosition(map)).poll();
         if (map.getEntityFromPosition(cellForTurn) instanceof Grass) {
             Position tmp = position;
+
             map.setEntityToPos(cellForTurn, this);
             map.setEntityToPos(tmp, new Land(tmp));
-
         } else {
             map.swapEntities(position, cellForTurn);
-            //System.out.println("new position: " + this.position);
         }
+        System.out.println("herb coordinate: " + this.position);
+        System.out.println("herb count: " + herb_counter);
     }
 
     public Position findFoodPosition(WorldMap map) {
@@ -54,33 +37,31 @@ public class Herbivore extends Creature {
         while (!current.isEmpty()) {
             Position cell = current.poll();
             if (map.getEntityFromPosition(cell) instanceof Grass) {
-                //System.out.println("findFoodPosition: " + cell);
                 return cell;
             } else {
                 processed.add(cell);
                 current.addAll(findAdjacentCells(processed, cell, map));
             }
         }
-        //System.out.println("findFoodPosition: null");
         return null;
     }
 
-    public Queue<Position> findPath(WorldMap map) {
-        //вычисляет рандомный путь если еды нет
-        if (findFoodPosition(map) == null) {
+    public Queue<Position> findPath(WorldMap map, Position food) {
+        if (food == null) {
             Random random = new Random();
             List<Position> cellsForStep = findAdjacentCells(new ArrayList<>(), position, map);
             Queue<Position> randomPath = new ArrayDeque<>();
             randomPath.add(cellsForStep.get(random.nextInt(cellsForStep.size())));
             //System.out.println("randomCell: " + randomPath.peek());
+            System.out.println("Randompath: " + randomPath);
             return randomPath;
         } else {
-            Position target = findFoodPosition(map);
+            Position target = food;
             Queue<Position> pathToFood = new ArrayDeque<>();
             List<Position> processed = new ArrayList<>();
-            Queue<Position> open = new PriorityQueue<>((a, b) -> {
-                int aManhDistance = Math.abs(a.v - target.v) + Math.abs(a.h - target.h);
-                int bManhDistance = Math.abs(b.v - target.v) + Math.abs(b.h - target.h);
+            Queue<Position> open = new PriorityQueue<>((p1, p2) -> {
+                int aManhDistance = Math.abs(p1.v - target.v) + Math.abs(p1.h - target.h);
+                int bManhDistance = Math.abs(p2.v - target.v) + Math.abs(p2.h - target.h);
                 return aManhDistance - bManhDistance;
             });
 
@@ -119,7 +100,6 @@ public class Herbivore extends Creature {
                 )
                 .collect(Collectors.toList());
         processed.addAll(result);
-        //System.out.println("findAdjacentCells: " + result);
         return result;
     }
 }
