@@ -7,13 +7,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Herbivore extends Creature {
-    private int herb_counter = 0;
     private static final int HEALTH = 10;
     private static final int SPEED = 1;
 
     public Herbivore(Position pos) {
         super(HEALTH, SPEED, pos);
-        herb_counter++;
     }
 
     @Override
@@ -27,8 +25,6 @@ public class Herbivore extends Creature {
         } else {
             map.swapEntities(position, cellForTurn);
         }
-        System.out.println("herb coordinate: " + this.position);
-        System.out.println("herb count: " + herb_counter);
     }
 
     public Position findFoodPosition(WorldMap map) {
@@ -40,7 +36,7 @@ public class Herbivore extends Creature {
                 return cell;
             } else {
                 processed.add(cell);
-                current.addAll(findAdjacentCells(processed, cell, map));
+                current.addAll(findNearestCellsForMove(processed, cell, map));
             }
         }
         return null;
@@ -49,11 +45,9 @@ public class Herbivore extends Creature {
     public Queue<Position> findPath(WorldMap map, Position food) {
         if (food == null) {
             Random random = new Random();
-            List<Position> cellsForStep = findAdjacentCells(new ArrayList<>(), position, map);
+            List<Position> cellsForStep = findNearestCellsForMove(new ArrayList<>(), position, map);
             Queue<Position> randomPath = new ArrayDeque<>();
             randomPath.add(cellsForStep.get(random.nextInt(cellsForStep.size())));
-            //System.out.println("randomCell: " + randomPath.peek());
-            System.out.println("Randompath: " + randomPath);
             return randomPath;
         } else {
             Position target = food;
@@ -75,15 +69,13 @@ public class Herbivore extends Creature {
                     break;
                 }
                 processed.add(cell);
-                open.addAll(findAdjacentCells(processed, cell, map));
+                open.addAll(findNearestCellsForMove(processed, cell, map));
             }
-
-            //System.out.println("findPath: " + pathToFood);
             return pathToFood;
         }
     }
 
-    public List<Position> findAdjacentCells(List<Position> processed, Position cell, WorldMap map) {
+    public List<Position> findNearestCellsForMove(List<Position> processed, Position cell, WorldMap map) {
         List<Position> cellsForStep = List.of(
                 new Position(cell.v + 1, cell.h),
                 new Position(cell.v - 1, cell.h),

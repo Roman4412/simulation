@@ -17,7 +17,6 @@ public class AllMakeMove implements Action {
                 .map(entity -> (Creature) entity)
                 .forEach(creature -> {
                     creature.makeMove(map);
-                    System.out.println("execute creature: " + creature.getPosition());
                 });
     }
 }
