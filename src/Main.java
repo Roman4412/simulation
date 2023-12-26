@@ -1,37 +1,23 @@
-import Actions.AllMakeMove;
-import entities.Grass;
-import entities.Herbivore;
-import world_map.Position;
+import Actions.*;
 import world_map.WorldMap;
+
+import java.util.List;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        WorldMap map = new WorldMap(10);
+        WorldMap map = new WorldMap(30);
         SimulationMapRenderer renderer = new SimulationMapRenderer();
+        List<Action> initAction = List.of(
+                new InitHerbivores(10),
+                new InitGrass(20),
+                new InitLand()
+        );
+        List<Action> turnAction = List.of(new AllMakeMove());
 
+        Simulation simulation = new Simulation(map, renderer, initAction, turnAction);
+        simulation.startSimulation();
 
-        Position herbPos = new Position(1, 1);
-        Herbivore testHerb = new Herbivore(herbPos);
-        Position herbPos1 = new Position(5, 4);
-        Herbivore testHerb1 = new Herbivore(herbPos);
-
-        Position grassPos = new Position(10, 10);
-        Grass testGrass = new Grass(grassPos);
-
-        map.setEntityToPos(herbPos, testHerb);
-        map.setEntityToPos(herbPos1, testHerb1);
-        map.setEntityToPos(grassPos, testGrass);
-        map.setLand(97);
-
-        renderer.render(map);
-
-        AllMakeMove a = new AllMakeMove();
-        for (int i = 0; i < 14; i++) {
-            a.execute(map);
-            renderer.render(map);
-
-        }
     }
 }

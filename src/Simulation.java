@@ -1,6 +1,8 @@
 import Actions.Action;
 import world_map.WorldMap;
 
+import java.util.List;
+
 public class Simulation {
     /*
     init:
@@ -28,10 +30,10 @@ public class Simulation {
     private long turn_counter = 0;
     private final WorldMap map;
     private final SimulationMapRenderer renderer;
-    private final Action[] initActions;
-    private final Action[] turnActions;
+    private final List<Action> initActions;
+    private final List<Action> turnActions;
 
-    public Simulation(WorldMap map, SimulationMapRenderer renderer, Action[] initActions, Action[] turnActions) {
+    public Simulation(WorldMap map, SimulationMapRenderer renderer, List<Action> initActions, List<Action> turnActions) {
         this.map = map;
         this.renderer = renderer;
         this.initActions = initActions;
@@ -39,7 +41,10 @@ public class Simulation {
     }
 
     public void startSimulation() {
-        while (true) {
+        initActions.forEach(action -> action.execute(map));
+        while (turn_counter < 15) {
+            ++turn_counter;
+            turnActions.forEach(action -> action.execute(map));
             renderer.render(map);
         }
     }

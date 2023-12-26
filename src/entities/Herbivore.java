@@ -33,7 +33,7 @@ public class Herbivore extends Creature {
         // может возникнуть ситуация, когда 2 существа попытаются занять одну клетку
 
         if (path.isEmpty()) {
-            System.out.println("old position: " + this.position);
+            //System.out.println("old position: " + this.position);
             path = findPath(map);
         }
         Position cellForTurn = path.poll();
@@ -44,7 +44,7 @@ public class Herbivore extends Creature {
 
         } else {
             map.swapEntities(position, cellForTurn);
-            System.out.println("new position: " + this.position);
+            //System.out.println("new position: " + this.position);
         }
     }
 
@@ -54,14 +54,14 @@ public class Herbivore extends Creature {
         while (!current.isEmpty()) {
             Position cell = current.poll();
             if (map.getEntityFromPosition(cell) instanceof Grass) {
-                System.out.println("findFoodPosition: " + cell);
+                //System.out.println("findFoodPosition: " + cell);
                 return cell;
             } else {
                 processed.add(cell);
                 current.addAll(findAdjacentCells(processed, cell, map));
             }
         }
-        System.out.println("findFoodPosition: null");
+        //System.out.println("findFoodPosition: null");
         return null;
     }
 
@@ -72,7 +72,7 @@ public class Herbivore extends Creature {
             List<Position> cellsForStep = findAdjacentCells(new ArrayList<>(), position, map);
             Queue<Position> randomPath = new ArrayDeque<>();
             randomPath.add(cellsForStep.get(random.nextInt(cellsForStep.size())));
-            System.out.println("randomCell: " + randomPath.peek());
+            //System.out.println("randomCell: " + randomPath.peek());
             return randomPath;
         } else {
             Position target = findFoodPosition(map);
@@ -97,7 +97,7 @@ public class Herbivore extends Creature {
                 open.addAll(findAdjacentCells(processed, cell, map));
             }
 
-            System.out.println("findPath: " + pathToFood);
+            //System.out.println("findPath: " + pathToFood);
             return pathToFood;
         }
     }
