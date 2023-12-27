@@ -16,14 +16,25 @@ public class Herbivore extends Creature {
 
     @Override
     public void makeMove(WorldMap map) {
-        Position cellForTurn = findPath(map, findFoodPosition(map)).poll();
-        if (map.getMap().get(cellForTurn) instanceof Grass) {
-            Position tmp = position;
-            map.setEntityToPos(cellForTurn, this);
-            map.setEntityToPos(tmp, new Land(tmp));
+        Position cellForMove = findPath(map, findFoodPosition(map)).poll();
+        if (map.getMap().get(cellForMove) instanceof Grass) {
+            eat(map,cellForMove);
         } else {
-            map.swapEntities(position, cellForTurn);
+            makeStep(map, cellForMove);
         }
+    }
+
+    private void makeStep(WorldMap map, Position target) {
+        Entity e1 = this;
+        Entity e2 = map.getMap().get(target);
+        map.setEntityToPos(position,e2);
+        map.setEntityToPos(target,e1);
+    }
+
+    private void eat(WorldMap map, Position target) {
+        Position tmp = position;
+        map.setEntityToPos(target, this);
+        map.setEntityToPos(tmp, new Land(tmp));
     }
 
     public Position findFoodPosition(WorldMap map) {
@@ -44,9 +55,9 @@ public class Herbivore extends Creature {
     public Queue<Position> findPath(WorldMap map, Position food) {
         if (food == null) {
             Random random = new Random();
-            List<Position> cellsForStep = findNearestCellsForMove(new ArrayList<>(), position, map);
+            List<Position> cellsForMove = findNearestCellsForMove(new ArrayList<>(), position, map);
             Queue<Position> randomPath = new ArrayDeque<>();
-            randomPath.add(cellsForStep.get(random.nextInt(cellsForStep.size())));
+            randomPath.add(cellsForMove.get(random.nextInt(cellsForMove.size())));
             return randomPath;
         } else {
             Position target = food;
@@ -93,4 +104,6 @@ public class Herbivore extends Creature {
         processed.addAll(result);
         return result;
     }
+
+
 }
