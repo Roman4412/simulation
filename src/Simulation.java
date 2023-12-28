@@ -55,7 +55,7 @@ public class Simulation {
             initActions.forEach(action -> action.execute(map));
         }
         turn_counter++;
-        renderer.render(map);
         turnActions.forEach(action -> action.execute(map));
+        renderer.render(map);
     }
 }

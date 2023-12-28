@@ -56,7 +56,7 @@ public class SimulationMapRenderer {
 
     private void clearConsole() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(800);
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
             System.out.println("Ошибка при очистке консоли: " + e.getMessage());
