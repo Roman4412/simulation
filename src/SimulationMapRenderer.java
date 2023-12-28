@@ -1,10 +1,6 @@
 import entities.Entity;
-import entities.Herbivore;
-import world_map.Position;
 import world_map.WorldMap;
 
-import java.util.List;
-import java.util.Optional;
 
 public class SimulationMapRenderer {
     private static final String PREDATOR = "\033[5;38;05;196m\u25A0";

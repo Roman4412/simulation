@@ -3,8 +3,6 @@ package entities;
 import world_map.Position;
 import world_map.WorldMap;
 
-import java.util.Map;
-
 public abstract class Creature extends Entity {
     final int health;
     final int speed;
@@ -16,6 +14,7 @@ public abstract class Creature extends Entity {
     }
 
     public abstract void makeMove(WorldMap map);
+
 
     public int getHealth() {
         return health;

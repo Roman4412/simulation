@@ -9,7 +9,7 @@ import java.util.Random;
 public class InitGrass implements Action {
     Random random = new Random();
 
-    private int amount;
+    private final int amount;
 
     public InitGrass(int amount) {
         this.amount = amount;

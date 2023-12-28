@@ -1,16 +1,18 @@
 package Actions;
 
-import entities.Herbivore;
+import entities.Rock;
+import entities.Tree;
 import world_map.Position;
 import world_map.WorldMap;
 
 import java.util.Random;
 
-public class InitHerbivores implements Action {
+public class InitRocks implements Action{
     Random random = new Random();
+
     private final int amount;
 
-    public InitHerbivores(int amount) {
+    public InitRocks(int amount) {
         this.amount = amount;
     }
 
@@ -19,7 +21,7 @@ public class InitHerbivores implements Action {
         int count = 0;
         while (count < amount) {
             Position position = map.getAllPositions().get(random.nextInt(map.getAllPositions().size()));
-            map.getMap().put(position, new Herbivore(position));
+            map.getMap().put(position, new Rock(position));
             map.getAllPositions().remove(position);
             count++;
         }

@@ -12,6 +12,8 @@ public class Main {
         List<Action> initAction = List.of(
                 new InitHerbivores(1),
                 new InitGrass(30),
+                new InitTrees(25),
+                new InitRocks(20),
                 new InitLand()
         );
         List<Action> turnAction = List.of(new AllMakeMove());

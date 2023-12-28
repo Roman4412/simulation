@@ -60,13 +60,12 @@ public class Herbivore extends Creature {
             randomPath.add(cellsForMove.get(random.nextInt(cellsForMove.size())));
             return randomPath;
         } else {
-            Position target = food;
             Queue<Position> pathToFood = new ArrayDeque<>();
             List<Position> processed = new ArrayList<>();
             Queue<Position> open = new PriorityQueue<>((p1, p2) -> {
-                int aManhDistance = Math.abs(p1.v - target.v) + Math.abs(p1.h - target.h);
-                int bManhDistance = Math.abs(p2.v - target.v) + Math.abs(p2.h - target.h);
-                return aManhDistance - bManhDistance;
+                int p1toFoodDistance = Math.abs(p1.v - food.v) + Math.abs(p1.h - food.h);
+                int p2toFoodDistance = Math.abs(p2.v - food.v) + Math.abs(p2.h - food.h);
+                return p1toFoodDistance - p2toFoodDistance;
             });
 
             open.add(position);
@@ -75,7 +74,7 @@ public class Herbivore extends Creature {
                 if (!pathToFood.contains(cell) && cell != position) {
                     pathToFood.add(cell);
                 }
-                if (cell.equals(target)) {
+                if (cell.equals(food)) {
                     break;
                 }
                 processed.add(cell);
@@ -93,17 +92,14 @@ public class Herbivore extends Creature {
                 new Position(cell.v, cell.h - 1)
         );
         List<Position> result = cellsForStep.stream()
-                .filter(
-                        p -> !processed.contains(p)
+                .filter(p -> !processed.contains(p)
                                 && p.v <= map.getSize() && p.v > 0
                                 && p.h <= map.getSize() && p.h > 0
                                 && map.getMap().get(p) instanceof Land
-                                || map.getMap().get(p) instanceof Grass
-                )
+                                || map.getMap().get(p) instanceof Grass)
                 .collect(Collectors.toList());
         processed.addAll(result);
         return result;
     }
-
 
 }
