@@ -22,7 +22,7 @@ public class Herbivore extends Creature {
         Position food = findFood(map);
         path = findPath(map, food);
         Position posForMove = path.poll();
-        System.out.println("hbr from: " + position + " to: " + posForMove);
+        // System.out.println("hbr from: " + position + " to: " + posForMove);
         // System.out.println(cellForMove);
         if (map.getMap().get(posForMove) instanceof Grass) {
             eat(map,posForMove);

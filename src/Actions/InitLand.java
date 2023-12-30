@@ -7,7 +7,7 @@ import world_map.WorldMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitLand implements Action {
+public class InitLand extends InitAction implements Action {
 
     @Override
     public void execute(WorldMap map) {

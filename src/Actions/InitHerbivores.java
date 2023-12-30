@@ -6,22 +6,19 @@ import world_map.WorldMap;
 
 import java.util.Random;
 
-public class InitHerbivores implements Action {
-    Random random = new Random();
-    private final int amount;
+public class InitHerbivores extends  InitAction implements Action {
 
     public InitHerbivores(int amount) {
-        this.amount = amount;
+        super(amount);
     }
 
     @Override
     public void execute(WorldMap map) {
-        int count = 0;
-        while (count < amount) {
+        while (counter < amount) {
             Position position = map.getAllPositions().get(random.nextInt(map.getAllPositions().size()));
             map.getMap().put(position, new Herbivore(position));
             map.getAllPositions().remove(position);
-            count++;
+            counter++;
         }
     }
 }

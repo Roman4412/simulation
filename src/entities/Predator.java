@@ -26,7 +26,7 @@ public class Predator extends Creature {
         // System.out.println(posForMove);
         path = findPath(map, food);
         Position posForMove = path.poll();
-        System.out.println("pdr from: " + position + " to: " + posForMove);
+        // System.out.println("pdr from: " + position + " to: " + posForMove);
         if (map.getMap().get(posForMove) instanceof Herbivore) {
             eat(map,posForMove);
         } else {
