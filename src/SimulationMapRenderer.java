@@ -1,4 +1,6 @@
 import entities.Entity;
+import entities.Herbivore;
+import entities.Predator;
 import world_map.WorldMap;
 
 
@@ -27,11 +29,8 @@ public class SimulationMapRenderer {
                         System.out.println();
                     }
                 });
-        /*Optional<Position> first = map.getMap().values().stream()
-                .filter(e -> e instanceof Herbivore)
-                .map(h -> h.getPosition())
-                .findFirst();
-        System.out.println(first);*/
+        System.out.println("Herbivores: " + map.getMap().values().stream().filter(h -> h instanceof Herbivore).count());
+        System.out.println("Predators: " + map.getMap().values().stream().filter(h -> h instanceof Predator).count());
     }
 
 

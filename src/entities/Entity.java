@@ -8,12 +8,7 @@ public class Entity {
     public Entity(Position position) {
         this.position = position;
     }
-
     public void changePosition(Position position) {
         this.position = position;
-    }
-
-    public Position getPosition() {
-        return position;
     }
 }

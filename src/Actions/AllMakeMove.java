@@ -16,7 +16,9 @@ public class AllMakeMove implements Action {
                 .filter(entity -> entity instanceof Creature)
                 .map(entity -> (Creature) entity)
                 .forEach(creature -> {
-                    creature.makeMove(map);
+                    if (map.getMap().containsValue(creature)) {
+                        creature.makeMove(map);
+                    }
                 });
     }
 }

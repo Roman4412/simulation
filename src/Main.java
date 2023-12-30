@@ -7,13 +7,14 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        WorldMap map = new WorldMap(30);
+        WorldMap map = new WorldMap(20);
         SimulationMapRenderer renderer = new SimulationMapRenderer();
         List<Action> initAction = List.of(
-                new InitHerbivores(1),
-                new InitGrass(30),
-                new InitTrees(25),
-                new InitRocks(20),
+                new InitHerbivores(10),
+                new InitPredators(1),
+                new InitGrass(0),
+                new InitTrees(0),
+                new InitRocks(0),
                 new InitLand()
         );
         List<Action> turnAction = List.of(new AllMakeMove());

@@ -4,12 +4,14 @@ import world_map.Position;
 import world_map.WorldMap;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Herbivore extends Creature {
     private static final int HEALTH = 10;
     private static final int SPEED = 1;
     Queue<Position> path = new ArrayDeque<>();
+    Predicate<Entity> isAvailable = pos -> pos instanceof Grass || pos instanceof Land;
 
     public Herbivore(Position pos) {
         super(HEALTH, SPEED, pos);
@@ -17,34 +19,20 @@ public class Herbivore extends Creature {
 
     @Override
     public void makeMove(WorldMap map) {
-        Position food = findFoodPosition(map);
-        if (path.isEmpty()) {
-            path = findPath(map, food);
-        }
-        Position cellForMove = path.poll();
-        System.out.println(cellForMove);
-        if (map.getMap().get(cellForMove) instanceof Grass) {
-            eat(map, cellForMove);
+        Position food = findFood(map);
+        path = findPath(map, food);
+        Position posForMove = path.poll();
+        System.out.println("hbr from: " + position + " to: " + posForMove);
+        // System.out.println(cellForMove);
+        if (map.getMap().get(posForMove) instanceof Grass) {
+            eat(map,posForMove);
         } else {
-            //System.out.println("cellToFoodDistance: " + Math.abs(cellForMove.v - food.v) + Math.abs(cellForMove.h - food.h));
-            makeStep(map, cellForMove);
+            makeStep(map, posForMove);
         }
     }
 
-    private void makeStep(WorldMap map, Position target) {
-        Entity e1 = this;
-        Entity e2 = map.getMap().get(target);
-        map.setEntityToPos(position, e2);
-        map.setEntityToPos(target, e1);
-    }
-
-    private void eat(WorldMap map, Position target) {
-        Position tmp = position;
-        map.setEntityToPos(target, this);
-        map.setEntityToPos(tmp, new Land(tmp));
-    }
-
-    public Position findFoodPosition(WorldMap map) {
+    @Override
+    public Position findFood(WorldMap map) {
         Set<Position> processed = new HashSet<>();
         Queue<Position> current = new ArrayDeque<>(List.of(position));
         while (!current.isEmpty()) {
@@ -53,76 +41,70 @@ public class Herbivore extends Creature {
                 return cell;
             } else {
                 processed.add(cell);
-                current.addAll(findNearestCellsForMove(processed, cell, map));
+                current.addAll(findAvailableNeighborPositions(processed, cell, map, isAvailable));
             }
         }
         return null;
     }
 
+    @Override
     public Queue<Position> findPath(WorldMap map, Position food) {
         if (food == null) {
             Random random = new Random();
-            List<Position> cellsForMove = findNearestCellsForMove(new HashSet<>(), position, map);
+            List<Position> positions = findAvailableNeighborPositions(new HashSet<>(), position, map, isAvailable);
             Queue<Position> randomPath = new ArrayDeque<>();
-            randomPath.add(cellsForMove.get(random.nextInt(cellsForMove.size())));
+            randomPath.add(positions.get(random.nextInt(positions.size())));
             return randomPath;
         } else {
             Queue<Position> pathToFood = new ArrayDeque<>();
             Set<Position> processed = new HashSet<>();
-            Queue<Position> open = new PriorityQueue<>(Comparator.comparingInt(cell -> cell.calcFinalCost(food)));
-            /*
-             * взять cell из open
-             * добавить в pathToFood
-             * если текущая ячейка еда - прервать цикл
-             * добавить cell в обработанные
-             * выбрать доступные соседние ячейки
-             * вычислить расстояние для каждой соседней ячейки до еды
-             * добавить в open в порядке приближения к еде
-             * */
+            Queue<Position> open = new PriorityQueue<>(Comparator.comparingInt(cell -> cell.findFinalCost(food)));
             open.add(position);
             while (!open.isEmpty()) {
-                Position cell = open.poll();
-                if (!pathToFood.contains(cell) && cell != position) {
-                    pathToFood.add(cell);
+                Position position = open.poll();
+                if (!pathToFood.contains(position) && position != this.position) {
+                    pathToFood.add(position);
                 }
-                if (cell.equals(food)) {
+                if (position.equals(food)) {
                     break;
                 }
-                processed.add(cell);
-                open.addAll(findNearestCellsForMove(processed, cell, map));
-                //System.out.println("cell: " + cell);
+                processed.add(position);
+                open.addAll(findAvailableNeighborPositions(processed, position, map, isAvailable));
+                // System.out.println("position: " + position);
             }
 
             // System.out.println("pathToFood: " + pathToFood);
-            //  System.out.println("processed: " + processed);
-            System.out.println("open: " + open);
+            // System.out.println("processed: " + processed);
+            // System.out.println("open: " + open);
             return pathToFood;
         }
-
     }
 
+    @Override
+    public List<Position> findAvailableNeighborPositions(Set<Position> processed,
+                                                         Position pos,
+                                                         WorldMap map,
+                                                         Predicate<Entity> isAvailable) {
 
-    public List<Position> findNearestCellsForMove(Set<Position> processed, Position cell, WorldMap map) {
-        List<Position> nearestCells = List.of(
-                new Position(cell.v + 1, cell.h, 10),
-                new Position(cell.v - 1, cell.h, 10),
-                new Position(cell.v, cell.h + 1, 10),
-                new Position(cell.v, cell.h - 1, 10),
+        List<Position> neighborPositions = List.of(
+                new Position(pos.v + speed, pos.h, 10),
+                new Position(pos.v - speed, pos.h, 10),
+                new Position(pos.v, pos.h + speed, 10),
+                new Position(pos.v, pos.h - speed, 10),
 
-                new Position(cell.v + 1, cell.h - 1, 14),
-                new Position(cell.v + 1, cell.h + 1, 14),
-                new Position(cell.v - 1, cell.h - 1, 14),
-                new Position(cell.v - 1, cell.h + 1, 14)
+                new Position(pos.v + speed, pos.h - speed, 14),
+                new Position(pos.v + speed, pos.h + speed, 14),
+                new Position(pos.v - speed, pos.h - speed, 14),
+                new Position(pos.v - speed, pos.h + speed, 14)
         );
-        List<Position> result = nearestCells.stream()
+        List<Position> availablePositions = neighborPositions.stream()
                 .filter(p -> !processed.contains(p)
-                        && p.v <= map.getSize() && p.v > 0
-                        && p.h <= map.getSize() && p.h > 0
-                        && map.getMap().get(p) instanceof Land
-                        || map.getMap().get(p) instanceof Grass)
+                        && (p.v <= map.getSize()) && (p.v > 0)
+                        && (p.h <= map.getSize()) && (p.h > 0)
+                        && isAvailable.test(map.getMap().get(p)))
                 .collect(Collectors.toList());
-        processed.addAll(result);
-        return result;
+        processed.addAll(availablePositions);
+        return availablePositions;
     }
 
 }

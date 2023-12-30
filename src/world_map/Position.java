@@ -1,5 +1,6 @@
 package world_map;
 
+
 import java.util.Objects;
 
 public class Position {
@@ -7,7 +8,6 @@ public class Position {
     public final int h;
     public int costToFinalPos;
     public int costFromStartPos;
-    public int finalCost;
 
     public Position(int v, int h) {
         this.v = v;
@@ -20,9 +20,10 @@ public class Position {
         this.costToFinalPos = costToFinalPos;
     }
 
-    public int calcFinalCost(Position food) {
+    public int findFinalCost(Position food) {
         return Math.abs(v - food.v) + Math.abs(h - food.h) + costFromStartPos;
     }
+
 
     @Override
     public String toString() {
