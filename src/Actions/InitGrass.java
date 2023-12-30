@@ -4,8 +4,6 @@ import entities.Grass;
 import world_map.Position;
 import world_map.WorldMap;
 
-import java.util.Random;
-
 public class InitGrass extends InitAction implements Action {
 
     public InitGrass(int amount) {

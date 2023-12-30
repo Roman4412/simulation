@@ -4,8 +4,6 @@ import entities.Predator;
 import world_map.Position;
 import world_map.WorldMap;
 
-import java.util.Random;
-
 public class InitPredators extends InitAction implements Action {
     public InitPredators(int amount) {
         this.amount = amount;

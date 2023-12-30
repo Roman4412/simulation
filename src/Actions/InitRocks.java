@@ -4,8 +4,6 @@ import entities.Rock;
 import world_map.Position;
 import world_map.WorldMap;
 
-import java.util.Random;
-
 public class InitRocks extends InitAction implements Action{
     public InitRocks(int amount) {
         this.amount = amount;
