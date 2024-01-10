@@ -1,4 +1,5 @@
 import entities.Entity;
+import entities.Grass;
 import entities.Herbivore;
 import entities.Predator;
 import world_map.WorldMap;
@@ -31,6 +32,7 @@ public class SimulationMapRenderer {
                 });
         System.out.println("Herbivores: " + map.getMap().values().stream().filter(h -> h instanceof Herbivore).count());
         System.out.println("Predators: " + map.getMap().values().stream().filter(h -> h instanceof Predator).count());
+        System.out.println("Grass: " + map.getMap().values().stream().filter(h -> h instanceof Grass).count());
     }
 
 

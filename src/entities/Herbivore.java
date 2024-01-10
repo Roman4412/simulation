@@ -1,6 +1,7 @@
 package entities;
 
 import world_map.Position;
+import world_map.WorldMap;
 
 import java.util.function.Predicate;
 
@@ -12,8 +13,8 @@ public class Herbivore extends Creature {
     }
 
     @Override
-    public Predicate<Entity> isFood() {
-        return pos -> pos instanceof Grass;
+    public boolean isFood(Position pos, WorldMap map) {
+        return map.getMap().get(pos) instanceof Grass;
     }
 
 }
