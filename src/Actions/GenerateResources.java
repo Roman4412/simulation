@@ -1,61 +1,51 @@
 package Actions;
 
-import entities.Entity;
 import entities.Grass;
 import entities.Herbivore;
 import entities.Land;
 import world_map.Position;
 import world_map.WorldMap;
 
-import java.io.PipedOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public class GenerateResources implements Action {
+    Random random = new Random();
 
     @Override
     public void execute(WorldMap map) {
-
-        Map<Position,Entity> copy = new HashMap<>(map.getMap());
-        long herbivoresAmount = map.getMap().values().stream()
-                .filter(value -> value instanceof Herbivore)
-                .count();
-        long grassAmount = map.getMap().values().stream()
-                .filter(value -> value instanceof Grass)
-                .count();
-        if (grassAmount < 13) {
-            generateGrass(map);
+        long grassAmount = checkGrassAmount(map);
+        if (grassAmount < 8) {
+            System.out.println("Grass amo: " + grassAmount);
+            generateGrass(map, grassAmount);
+        }
+        if (checkHerbivoresAmount(map) < 5) {
+            System.out.println("Herbivores amo: " + checkHerbivoresAmount(map));
+            //generateHerbivores(map);
         }
     }
 
-    private void generateGrass(WorldMap map) {
-        List<Position> availablePos = new ArrayList<>();
-        for (Entity e: map.getMap().values()) {
-            if(e instanceof Land) {
-                availablePos.add(e.getPosition());
-            }
+    private void generateGrass(WorldMap map, long amount) {
+        int counter = 0;
+        for (int i = 0; i < 10 - amount; i++) {
+            List<Position> availablePositions = map.getMap().keySet().stream()
+                    .filter(key -> map.getMap().get(key) instanceof Land)
+                    .toList();
+            Position position = availablePositions.get(random.nextInt(availablePositions.size()));
+            map.setEntityToPos(position, new Grass(position));
+            counter++;
         }
-        for (int i = 0; i < 5; i++) {
-            Position randomPos = availablePos.get((int) (Math.random() * availablePos.size()));
-            map.getMap().put(randomPos, new Grass(randomPos));
-            availablePos.remove(randomPos);
-        }
-
+        System.out.println("Grass generated: " + counter);
     }
 
-    private void generateHerbivore(WorldMap map) {
-        // ПОЧЕМУ ПРИ ИСПОЛЬЗОВАНИИ СТРИМОВ ПАДАЕТ АНСАПОРТЕД ОПЕРЭЙШН ЭКСЕПШН??
-        List<Position> availablePos = map.getMap().values().stream()
-                .filter(value -> value instanceof Land)
-                .map(Entity::getPosition)
-                .toList();
-        List<Position> pos = new ArrayList<>(availablePos);
-        for (int i = 0; i < 5; i++) {
-            Position randomPos = pos.get((int) (Math.random() * availablePos.size()));
-            map.getMap().put(randomPos, new Herbivore(randomPos));
-            pos.remove(randomPos);
-        }
+    private long checkGrassAmount(WorldMap map) {
+        long count = map.getMap().values().stream().filter(value -> value instanceof Grass).count();
+        return count;
     }
+
+    private long checkHerbivoresAmount(WorldMap map) {
+        long count = map.getMap().values().stream().filter(value -> value instanceof Herbivore).count();
+        return count;
+    }
+
 }

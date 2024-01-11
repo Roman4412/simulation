@@ -4,26 +4,26 @@ package world_map;
 import java.util.Objects;
 
 public class Position {
-    public final static int DIAGONAL_MOVE_COST = 8;
+    public final static int DIAGONAL_MOVE_COST = 14;
     public final static int VERTICAL_MOVE_COST = 10;
     public int baseCost;
     public int finalCost;
-    public final int v;
-    public final int h;
+    public final int vertical;
+    public final int horizontal;
 
-    public Position(int v, int h) {
-        this.v = v;
-        this.h = h;
+    public Position(int vertical, int horizontal) {
+        this.vertical = vertical;
+        this.horizontal = horizontal;
     }
 
-    public Position(int v, int h, int baseCost) {
-        this.v = v;
-        this.h = h;
+    public Position(int vertical, int horizontal, int baseCost) {
+        this.vertical = vertical;
+        this.horizontal = horizontal;
         this.baseCost = baseCost;
     }
     @Override
     public String toString() {
-        return v + "," + h;
+        return vertical + "," + horizontal;
     }
 
     @Override
@@ -31,11 +31,11 @@ public class Position {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
-        return v == position.v && h == position.h;
+        return vertical == position.vertical && horizontal == position.horizontal;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(v, h);
+        return Objects.hash(vertical, horizontal);
     }
 }

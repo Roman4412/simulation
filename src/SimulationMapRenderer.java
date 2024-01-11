@@ -19,14 +19,14 @@ public class SimulationMapRenderer {
         clearConsole();
         map.getMap().keySet().stream()
                 .sorted((p1, p2) -> {
-                    if (p1.v == p2.v) {
-                        return p1.h - p2.h;
+                    if (p1.vertical == p2.vertical) {
+                        return p1.horizontal - p2.horizontal;
                     } else {
-                        return p1.v - p2.v;
+                        return p1.vertical - p2.vertical;
                     }
                 }).forEach(p -> {
                     System.out.print(getSprite(map.getMap().get(p)) + SEPARATOR + RESET);
-                    if (p.h == map.getSize()) {
+                    if (p.horizontal == map.getSize()) {
                         System.out.println();
                     }
                 });
