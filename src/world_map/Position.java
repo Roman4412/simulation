@@ -6,8 +6,8 @@ import java.util.Objects;
 public class Position {
     public final static int DIAGONAL_MOVE_COST = 14;
     public final static int VERTICAL_MOVE_COST = 10;
-    public int baseCost;
-    public int finalCost;
+    public int moveCost;
+    public int totalCost;
     public final int vertical;
     public final int horizontal;
 
@@ -16,11 +16,19 @@ public class Position {
         this.horizontal = horizontal;
     }
 
-    public Position(int vertical, int horizontal, int baseCost) {
+    public Position(int vertical, int horizontal, int moveCost) {
         this.vertical = vertical;
         this.horizontal = horizontal;
-        this.baseCost = baseCost;
+        this.moveCost = moveCost;
     }
+
+    public int findCostToTarget(Position target) {
+        totalCost = Math.abs(vertical - target.vertical)
+                + Math.abs(horizontal - target.horizontal)
+                + moveCost;
+        return totalCost;
+    }
+
     @Override
     public String toString() {
         return vertical + "," + horizontal;

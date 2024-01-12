@@ -15,14 +15,28 @@ public class GenerateResources implements Action {
     @Override
     public void execute(WorldMap map) {
         long grassAmount = checkGrassAmount(map);
+        long herbivoresAmount = checkHerbivoresAmount(map);
         if (grassAmount < 8) {
             System.out.println("Grass amo: " + grassAmount);
             generateGrass(map, grassAmount);
         }
-        if (checkHerbivoresAmount(map) < 5) {
-            System.out.println("Herbivores amo: " + checkHerbivoresAmount(map));
-            //generateHerbivores(map);
+        if (herbivoresAmount < 5) {
+            System.out.println("Herbivores amo: " + herbivoresAmount);
+            generateHerbivores(map, herbivoresAmount);
         }
+    }
+
+    private void generateHerbivores(WorldMap map, long amount) {
+        int counter = 0;
+        for (int i = 0; i < 10 - amount; i++) {
+            List<Position> availablePositions = map.getMap().keySet().stream()
+                    .filter(key -> map.getMap().get(key) instanceof Land)
+                    .toList();
+            Position position = availablePositions.get(random.nextInt(availablePositions.size()));
+            map.setEntityToPos(position, new Herbivore(position));
+            counter++;
+        }
+        System.out.println(counter + " Herbivores generated");
     }
 
     private void generateGrass(WorldMap map, long amount) {
@@ -35,17 +49,18 @@ public class GenerateResources implements Action {
             map.setEntityToPos(position, new Grass(position));
             counter++;
         }
-        System.out.println("Grass generated: " + counter);
+        System.out.println(counter + " Grass generated");
     }
 
     private long checkGrassAmount(WorldMap map) {
-        long count = map.getMap().values().stream().filter(value -> value instanceof Grass).count();
-        return count;
+        return map.getMap().values().stream()
+                .filter(value -> value instanceof Grass)
+                .count();
     }
 
     private long checkHerbivoresAmount(WorldMap map) {
-        long count = map.getMap().values().stream().filter(value -> value instanceof Herbivore).count();
-        return count;
+        return map.getMap().values().stream()
+                .filter(value -> value instanceof Herbivore)
+                .count();
     }
-
 }

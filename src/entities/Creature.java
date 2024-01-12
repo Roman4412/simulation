@@ -11,6 +11,7 @@ import static world_map.Position.*;
 public abstract class Creature extends Entity {
     final int health;
     final int speed;
+    Deque<Position> path = new ArrayDeque<>();
 
     public Creature(int health, int speed, Position position) {
         super(position);
@@ -19,8 +20,23 @@ public abstract class Creature extends Entity {
     }
 
     public void makeMove(WorldMap map) {
+        //System.out.println(this.position + " makeMove start");
         Position food = findFood(map);
-        Position posForMove = findPath(map,food).poll();
+        if (!path.isEmpty()) {
+            int oldFoodCost = position.findCostToTarget(path.peekLast());
+            int newFoodCost = position.findCostToTarget(food);
+            if (newFoodCost < oldFoodCost) {
+                path = (Deque<Position>) findPath(map, food);
+            }
+        } else {
+            path = (Deque<Position>) findPath(map, food);
+        }
+
+        Position posForMove = path.poll();
+
+        System.out.println("this pos: " + position);
+        System.out.println("food: " + food);
+        System.out.println("path: " + path);
 
         if (isFood(posForMove, map)) {
             eat(map, posForMove);
@@ -30,22 +46,16 @@ public abstract class Creature extends Entity {
     }
 
     Position findFood(WorldMap map) {
-        //System.out.println("findFoodEnd start");
         Set<Position> processed = new HashSet<>();
         Queue<Position> current = new ArrayDeque<>(List.of(position));
-        int count = 0;
         while (!current.isEmpty()) {
             Position pos = current.poll();
             if (isFood(pos, map)) {
-                //   System.out.println("findFoodEnd end");
                 return pos;
             } else {
                 processed.add(pos);
-                current.addAll(findAvailableNeighborPositions(processed, pos, map));
-                count++;
-            }
-            if(count > 200) {
-                return null;
+                List<Position> availablePositions = findAvailableNeighborPositions(processed, pos, map);
+                current.addAll(availablePositions);
             }
         }
         return null;
@@ -58,15 +68,15 @@ public abstract class Creature extends Entity {
             List<Position> positions = findAvailableNeighborPositions(new HashSet<>(), position, map);
             Queue<Position> randomPath = new ArrayDeque<>();
             randomPath.add(positions.get(random.nextInt(positions.size())));
+            //System.out.println("findPath random");
             return randomPath;
         } else {
             Queue<Position> pathToFood = new ArrayDeque<>();
             Set<Position> processed = new HashSet<>();
-            Queue<Position> open = new PriorityQueue<>((p1, p2) -> {
-                // TODO put into method in Position
-                p1.finalCost = Math.abs(p1.vertical - food.vertical) + Math.abs(p1.horizontal - food.horizontal) + p1.baseCost;
-                p2.finalCost = Math.abs(p2.vertical - food.vertical) + Math.abs(p2.horizontal - food.horizontal) + p2.baseCost;
-                return p1.finalCost - p2.finalCost;
+            Queue<Position> open = new PriorityQueue<>((a, b) -> {
+                int maxForA = Math.max(Math.abs(a.vertical - food.vertical), Math.abs(a.horizontal - food.horizontal));
+                int maxForB = Math.max(Math.abs(b.vertical - food.vertical), Math.abs(b.horizontal - food.horizontal));
+                return maxForA-maxForB;
             });
             open.add(position);
             while (!open.isEmpty()) {
@@ -82,12 +92,16 @@ public abstract class Creature extends Entity {
                 open.clear();
                 processed.addAll(availablePos);
                 open.addAll(availablePos);
+                //System.out.println("path: " + pathToFood);
+                //System.out.println("open: " + open);
+                //System.out.println("food: " + food);
+                // System.out.println("this: " + position);
             }
 
             //System.out.println("pathToFood: " + pathToFood);
             // System.out.println("processed: " + processed);
             // System.out.println("open: " + open);
-
+            //System.out.println("findPath");
             return pathToFood;
         }
     }
@@ -121,13 +135,16 @@ public abstract class Creature extends Entity {
         Entity e2 = map.getMap().get(target);
         map.setEntityToPos(position, e2);
         map.setEntityToPos(target, this);
+        //System.out.println("makeStep");
     }
 
     void eat(WorldMap map, Position target) {
         Position tmp = position;
         map.setEntityToPos(target, this);
         map.setEntityToPos(tmp, new Land(tmp));
+        //System.out.println("eat");
     }
 
     abstract boolean isFood(Position pos, WorldMap map);
+
 }
