@@ -10,11 +10,11 @@ public class Main {
         WorldMap map = new WorldMap(30);
         SimulationMapRenderer renderer = new SimulationMapRenderer();
         List<Action> initAction = List.of(
-                    new InitHerbivores(5),
+                    new InitHerbivores(10),
                 new InitPredators(1),
                 new InitGrass(30),
-                new InitTrees(20),
-                new InitRocks(20),
+                new InitTrees(50),
+                new InitRocks(80),
                 new InitLand());
         List<Action> turnAction = List.of(new AllMakeMove());
 

@@ -22,7 +22,7 @@ public abstract class Creature extends Entity {
     public void makeMove(WorldMap map) {
         //System.out.println(this.position + " makeMove start");
         Position food = findFood(map);
-        if (!path.isEmpty()) {
+        if (!path.isEmpty() && food != null) {
             int oldFoodCost = position.findCostToTarget(path.peekLast());
             int newFoodCost = position.findCostToTarget(food);
             if (newFoodCost < oldFoodCost) {
@@ -34,9 +34,9 @@ public abstract class Creature extends Entity {
 
         Position posForMove = path.poll();
 
-        System.out.println("this pos: " + position);
-        System.out.println("food: " + food);
-        System.out.println("path: " + path);
+        //System.out.println("this pos: " + position);
+        //System.out.println("food: " + food);
+        //System.out.println("path: " + path);
 
         if (isFood(posForMove, map)) {
             eat(map, posForMove);
@@ -46,19 +46,11 @@ public abstract class Creature extends Entity {
     }
 
     Position findFood(WorldMap map) {
-        Set<Position> processed = new HashSet<>();
-        Queue<Position> current = new ArrayDeque<>(List.of(position));
-        while (!current.isEmpty()) {
-            Position pos = current.poll();
-            if (isFood(pos, map)) {
-                return pos;
-            } else {
-                processed.add(pos);
-                List<Position> availablePositions = findAvailableNeighborPositions(processed, pos, map);
-                current.addAll(availablePositions);
-            }
-        }
-        return null;
+       return map.getMap().keySet().stream().filter(value -> isFood(value, map)).min((p1, p2) -> {
+           int maxForA = Math.max(Math.abs(p1.vertical - position.vertical), Math.abs(p1.horizontal - position.horizontal));
+           int maxForB = Math.max(Math.abs(p2.vertical - position.vertical), Math.abs(p2.horizontal - position.horizontal));
+           return maxForA - maxForB;
+       }).orElse(null);
     }
 
     Queue<Position> findPath(WorldMap map, Position food) {
