@@ -20,24 +20,19 @@ public abstract class Creature extends Entity {
     }
 
     public void makeMove(WorldMap map) {
-        //System.out.println(this.position + " makeMove start");
+        //TODO redo cast to Deque, findCostToTarget
         Position food = findFood(map);
         if (!path.isEmpty() && food != null) {
-            int oldFoodCost = position.findCostToTarget(path.peekLast());
-            int newFoodCost = position.findCostToTarget(food);
+            //TODO заменить findCostToTarget вместе с компараторами на один метод findChebyshevDistance
+            int oldFoodCost = position.findChebyshevDistance(path.peekLast());
+            int newFoodCost = position.findChebyshevDistance(food);
             if (newFoodCost < oldFoodCost) {
                 path = (Deque<Position>) findPath(map, food);
             }
         } else {
             path = (Deque<Position>) findPath(map, food);
         }
-
         Position posForMove = path.poll();
-
-        //System.out.println("this pos: " + position);
-        //System.out.println("food: " + food);
-        //System.out.println("path: " + path);
-
         if (isFood(posForMove, map)) {
             eat(map, posForMove);
         } else {
@@ -46,30 +41,33 @@ public abstract class Creature extends Entity {
     }
 
     Position findFood(WorldMap map) {
-       return map.getMap().keySet().stream().filter(value -> isFood(value, map)).min((p1, p2) -> {
-           int maxForA = Math.max(Math.abs(p1.vertical - position.vertical), Math.abs(p1.horizontal - position.horizontal));
-           int maxForB = Math.max(Math.abs(p2.vertical - position.vertical), Math.abs(p2.horizontal - position.horizontal));
-           return maxForA - maxForB;
-       }).orElse(null);
+        return map.getMap().keySet().stream()
+                .filter(pos -> isFood(pos, map))
+                .min((pos1, pos2) -> {
+                    int maxForA = pos1.findChebyshevDistance(position);
+                    int maxForB = pos2.findChebyshevDistance(position);;
+                    return maxForA - maxForB;
+                })
+                .orElse(null);
     }
 
+
     Queue<Position> findPath(WorldMap map, Position food) {
-        //  System.out.println("findPath start");
         if (food == null) {
             Random random = new Random();
             List<Position> positions = findAvailableNeighborPositions(new HashSet<>(), position, map);
             Queue<Position> randomPath = new ArrayDeque<>();
             randomPath.add(positions.get(random.nextInt(positions.size())));
-            //System.out.println("findPath random");
             return randomPath;
         } else {
             Queue<Position> pathToFood = new ArrayDeque<>();
             Set<Position> processed = new HashSet<>();
             Queue<Position> open = new PriorityQueue<>((a, b) -> {
-                int maxForA = Math.max(Math.abs(a.vertical - food.vertical), Math.abs(a.horizontal - food.horizontal));
-                int maxForB = Math.max(Math.abs(b.vertical - food.vertical), Math.abs(b.horizontal - food.horizontal));
-                return maxForA-maxForB;
-            });
+                int maxForA = a.findChebyshevDistance(food);
+                int maxForB = b.findChebyshevDistance(food);
+                return maxForA - maxForB;
+            }
+            );
             open.add(position);
             while (!open.isEmpty()) {
                 Position pos = open.poll();
@@ -84,22 +82,12 @@ public abstract class Creature extends Entity {
                 open.clear();
                 processed.addAll(availablePos);
                 open.addAll(availablePos);
-                //System.out.println("path: " + pathToFood);
-                //System.out.println("open: " + open);
-                //System.out.println("food: " + food);
-                // System.out.println("this: " + position);
             }
-
-            //System.out.println("pathToFood: " + pathToFood);
-            // System.out.println("processed: " + processed);
-            // System.out.println("open: " + open);
-            //System.out.println("findPath");
             return pathToFood;
         }
     }
 
     List<Position> findAvailableNeighborPositions(Set<Position> processed, Position pos, WorldMap map) {
-        //System.out.println("findAvailable start");
         //TODO is it better to take already created Position from map?
 
         List<Position> neighborPos = List.of(
@@ -127,16 +115,13 @@ public abstract class Creature extends Entity {
         Entity e2 = map.getMap().get(target);
         map.setEntityToPos(position, e2);
         map.setEntityToPos(target, this);
-        //System.out.println("makeStep");
     }
 
     void eat(WorldMap map, Position target) {
         Position tmp = position;
         map.setEntityToPos(target, this);
         map.setEntityToPos(tmp, new Land(tmp));
-        //System.out.println("eat");
     }
 
     abstract boolean isFood(Position pos, WorldMap map);
-
 }

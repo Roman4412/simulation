@@ -7,7 +7,7 @@ public class Position {
     public final static int DIAGONAL_MOVE_COST = 14;
     public final static int VERTICAL_MOVE_COST = 10;
     public int moveCost;
-    public int totalCost;
+    public int chebyshevDistance;
     public final int vertical;
     public final int horizontal;
 
@@ -22,12 +22,11 @@ public class Position {
         this.moveCost = moveCost;
     }
 
-    public int findCostToTarget(Position target) {
-        totalCost = Math.abs(vertical - target.vertical)
-                + Math.abs(horizontal - target.horizontal)
-                + moveCost;
-        return totalCost;
+    public int findChebyshevDistance(Position target) {
+        chebyshevDistance = Math.max(Math.abs(this.vertical - target.vertical), Math.abs(this.horizontal - target.horizontal));
+        return chebyshevDistance;
     }
+
 
     @Override
     public String toString() {

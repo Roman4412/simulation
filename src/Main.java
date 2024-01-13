@@ -16,7 +16,7 @@ public class Main {
                 new InitTrees(50),
                 new InitRocks(80),
                 new InitLand());
-        List<Action> turnAction = List.of(new AllMakeMove());
+        List<Action> turnAction = List.of(new AllMakeMove(), new GenerateResources());
 
         Simulation simulation = new Simulation(map, renderer, initAction, turnAction);
         simulation.startSimulation();
