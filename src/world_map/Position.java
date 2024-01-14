@@ -4,9 +4,9 @@ package world_map;
 import java.util.Objects;
 
 public class Position {
-    public final static int DIAGONAL_MOVE_COST = 14;
-    public final static int VERTICAL_MOVE_COST = 10;
-    public int moveCost;
+    //TODO расчитывать расстояние чебышева в статическом методе в интерфейсе карты, который будет возвращать число.
+    //Изменить поиск соседних клеток. Вместо генерации Position брать их из карты через цикл
+    // вместо метода eat добавить метод attack, который будет переопределяться у наследников в зависимости от силы атаки и типа
     public int chebyshevDistance;
     public final int vertical;
     public final int horizontal;
@@ -16,14 +16,8 @@ public class Position {
         this.horizontal = horizontal;
     }
 
-    public Position(int vertical, int horizontal, int moveCost) {
-        this.vertical = vertical;
-        this.horizontal = horizontal;
-        this.moveCost = moveCost;
-    }
-
     public int findChebyshevDistance(Position target) {
-        chebyshevDistance = Math.max(Math.abs(this.vertical - target.vertical), Math.abs(this.horizontal - target.horizontal));
+        chebyshevDistance = Math.max(Math.abs(vertical - target.vertical), Math.abs(horizontal - target.horizontal));
         return chebyshevDistance;
     }
 

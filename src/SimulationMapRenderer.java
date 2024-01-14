@@ -16,6 +16,7 @@ public class SimulationMapRenderer {
     private static final String SEPARATOR = "  ";
 
     public void render(WorldMap map) {
+        //TODO использовать thenComparing
         clearConsole();
         map.getMap().keySet().stream()
                 .sorted((p1, p2) -> {

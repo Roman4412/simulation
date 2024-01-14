@@ -6,7 +6,7 @@ import world_map.WorldMap;
 
 public class Predator extends Creature {
     private static final int HEALTH = 15;
-    private static final int SPEED = 1;
+    private static final int SPEED = 2;
     private static final int ATTACK = 5;
 
     public Predator(Position pos) {

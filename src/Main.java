@@ -5,7 +5,6 @@ import java.util.List;
 
 
 public class Main {
-
     public static void main(String[] args) {
         WorldMap map = new WorldMap(30);
         SimulationMapRenderer renderer = new SimulationMapRenderer();
@@ -13,8 +12,8 @@ public class Main {
                     new InitHerbivores(10),
                 new InitPredators(1),
                 new InitGrass(30),
-                new InitTrees(50),
-                new InitRocks(80),
+                new InitTrees(30),
+                new InitRocks(30),
                 new InitLand());
         List<Action> turnAction = List.of(new AllMakeMove(), new GenerateResources());
 

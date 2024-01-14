@@ -6,8 +6,6 @@ import world_map.WorldMap;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static world_map.Position.*;
-
 public abstract class Creature extends Entity {
     final int health;
     final int speed;
@@ -23,7 +21,6 @@ public abstract class Creature extends Entity {
         //TODO redo cast to Deque, findCostToTarget
         Position food = findFood(map);
         if (!path.isEmpty() && food != null) {
-            //TODO заменить findCostToTarget вместе с компараторами на один метод findChebyshevDistance
             int oldFoodCost = position.findChebyshevDistance(path.peekLast());
             int newFoodCost = position.findChebyshevDistance(food);
             if (newFoodCost < oldFoodCost) {
@@ -45,7 +42,7 @@ public abstract class Creature extends Entity {
                 .filter(pos -> isFood(pos, map))
                 .min((pos1, pos2) -> {
                     int maxForA = pos1.findChebyshevDistance(position);
-                    int maxForB = pos2.findChebyshevDistance(position);;
+                    int maxForB = pos2.findChebyshevDistance(position);
                     return maxForA - maxForB;
                 })
                 .orElse(null);
@@ -88,27 +85,20 @@ public abstract class Creature extends Entity {
     }
 
     List<Position> findAvailableNeighborPositions(Set<Position> processed, Position pos, WorldMap map) {
-        //TODO is it better to take already created Position from map?
+        List<Position> neighborPositions = new ArrayList<>();
+        for (int i = pos.vertical - speed; i <= pos.vertical + speed; i++) {
+            for (int j = pos.horizontal - speed; j <= pos.horizontal + speed; j++) {
+                neighborPositions.add(new Position(i,j));
+                }
+            }
 
-        List<Position> neighborPos = List.of(
-                new Position(pos.vertical + speed, pos.horizontal, VERTICAL_MOVE_COST),
-                new Position(pos.vertical - speed, pos.horizontal, VERTICAL_MOVE_COST),
-                new Position(pos.vertical, pos.horizontal + speed, VERTICAL_MOVE_COST),
-                new Position(pos.vertical, pos.horizontal - speed, VERTICAL_MOVE_COST),
-
-                new Position(pos.vertical + speed, pos.horizontal - speed, DIAGONAL_MOVE_COST),
-                new Position(pos.vertical + speed, pos.horizontal + speed, DIAGONAL_MOVE_COST),
-                new Position(pos.vertical - speed, pos.horizontal - speed, DIAGONAL_MOVE_COST),
-                new Position(pos.vertical - speed, pos.horizontal + speed, DIAGONAL_MOVE_COST));
-
-        List<Position> positions = neighborPos.stream()
+        return neighborPositions.stream()
                 .filter(p -> !processed.contains(p)
                         && (p.vertical <= map.getSize()) && (p.vertical > 0)
                         && (p.horizontal <= map.getSize()) && (p.horizontal > 0)
                         && map.getMap().get(p) instanceof Land
                         || isFood(p, map))
                 .collect(Collectors.toList());
-        return positions;
     }
 
     void makeStep(WorldMap map, Position target) {
