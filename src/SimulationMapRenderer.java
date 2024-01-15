@@ -11,7 +11,7 @@ public class SimulationMapRenderer {
     private static final String ROCK = "\033[38;05;242m\u25A0";
     private static final String GRASS = "\033[38;05;46m\u25A0";
     private static final String TREE = "\033[38;05;28m\u25A0";
-    private static final String LAND = "-";
+    private static final String LAND = " ";
     private static final String RESET = "\033[0m";
     private static final String SEPARATOR = "  ";
 
@@ -20,14 +20,14 @@ public class SimulationMapRenderer {
         clearConsole();
         map.getMap().keySet().stream()
                 .sorted((p1, p2) -> {
-                    if (p1.vertical == p2.vertical) {
-                        return p1.horizontal - p2.horizontal;
-                    } else {
+                    if (p1.horizontal == p2.horizontal) {
                         return p1.vertical - p2.vertical;
+                    } else {
+                        return p1.horizontal - p2.horizontal;
                     }
                 }).forEach(p -> {
                     System.out.print(getSprite(map.getMap().get(p)) + SEPARATOR + RESET);
-                    if (p.horizontal == map.getSize()) {
+                    if (p.vertical == map.getSize()) {
                         System.out.println();
                     }
                 });
@@ -58,7 +58,7 @@ public class SimulationMapRenderer {
 
     private void clearConsole() {
         try {
-            Thread.sleep(800);
+            Thread.sleep(1200);
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
             System.out.println("Ошибка при очистке консоли: " + e.getMessage());

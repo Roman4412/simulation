@@ -4,27 +4,17 @@ package world_map;
 import java.util.Objects;
 
 public class Position {
-    //TODO расчитывать расстояние чебышева в статическом методе в интерфейсе карты, который будет возвращать число.
-    //Изменить поиск соседних клеток. Вместо генерации Position брать их из карты через цикл
-    // вместо метода eat добавить метод attack, который будет переопределяться у наследников в зависимости от силы атаки и типа
-    public int chebyshevDistance;
-    public final int vertical;
     public final int horizontal;
+    public final int vertical;
 
-    public Position(int vertical, int horizontal) {
-        this.vertical = vertical;
+    public Position(int horizontal, int vertical) {
         this.horizontal = horizontal;
+        this.vertical = vertical;
     }
-
-    public int findChebyshevDistance(Position target) {
-        chebyshevDistance = Math.max(Math.abs(vertical - target.vertical), Math.abs(horizontal - target.horizontal));
-        return chebyshevDistance;
-    }
-
 
     @Override
     public String toString() {
-        return vertical + "," + horizontal;
+        return horizontal + "," + vertical;
     }
 
     @Override
@@ -32,11 +22,11 @@ public class Position {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
-        return vertical == position.vertical && horizontal == position.horizontal;
+        return horizontal == position.horizontal && vertical == position.vertical;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vertical, horizontal);
+        return Objects.hash(horizontal, vertical);
     }
 }

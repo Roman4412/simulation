@@ -10,7 +10,7 @@ public class Main {
         SimulationMapRenderer renderer = new SimulationMapRenderer();
         List<Action> initAction = List.of(
                     new InitHerbivores(10),
-                new InitPredators(1),
+                new InitPredators(2),
                 new InitGrass(30),
                 new InitTrees(30),
                 new InitRocks(30),

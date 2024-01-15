@@ -44,6 +44,11 @@ public class WorldMap {
         return allPositions;
     }
 
+    public static int findChebyshevDistance(Position start, Position target) {
+        return Math.max(Math.abs(start.horizontal - target.horizontal),
+                Math.abs(start.vertical - target.vertical));
+    }
+
     public int getSize() {
         return size;
     }
