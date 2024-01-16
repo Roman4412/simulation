@@ -1,11 +1,13 @@
-import entities.Entity;
-import entities.Grass;
-import entities.Herbivore;
-import entities.Predator;
+import entities.*;
+import world_map.Position;
 import world_map.WorldMap;
+
+import java.util.Comparator;
 
 
 public class SimulationMapRenderer {
+    //TODO избавиться от if и дублирования
+    // хранить количество сущностей в переменных?
     private static final String PREDATOR = "\033[5;38;05;196m\u25A0";
     private static final String HERBIVORE = "\033[38;05;226m\u25A0";
     private static final String ROCK = "\033[38;05;242m\u25A0";
@@ -16,24 +18,31 @@ public class SimulationMapRenderer {
     private static final String SEPARATOR = "  ";
 
     public void render(WorldMap map) {
-        //TODO использовать thenComparing
         clearConsole();
         map.getMap().keySet().stream()
-                .sorted((p1, p2) -> {
-                    if (p1.horizontal == p2.horizontal) {
-                        return p1.vertical - p2.vertical;
-                    } else {
-                        return p1.horizontal - p2.horizontal;
+                .sorted(Comparator.comparingInt(Position::getVertical).thenComparingInt(Position::getHorizontal))
+                .forEach(p -> {
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 1) {
+                        System.out.print("     " + HERBIVORE + " Herbivores: " + map.getMap().values().stream().filter(h -> h instanceof Herbivore).count());
                     }
-                }).forEach(p -> {
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 2) {
+                        System.out.print("     " + PREDATOR + " Predators: " + map.getMap().values().stream().filter(h -> h instanceof Predator).count());
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 3) {
+                        System.out.print("     " + GRASS + " Grass: " + map.getMap().values().stream().filter(h -> h instanceof Grass).count());
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 4) {
+                        System.out.print("     " + ROCK + " Rock: " + map.getMap().values().stream().filter(h -> h instanceof Rock).count());
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 5) {
+                        System.out.print("     " + TREE + " Tree: " + map.getMap().values().stream().filter(h -> h instanceof Tree).count());
+                    }
                     System.out.print(getSprite(map.getMap().get(p)) + SEPARATOR + RESET);
-                    if (p.vertical == map.getSize()) {
+                    if (p.getHorizontal() == map.getSize()) {
                         System.out.println();
                     }
+
                 });
-        System.out.println("Herbivores: " + map.getMap().values().stream().filter(h -> h instanceof Herbivore).count());
-        System.out.println("Predators: " + map.getMap().values().stream().filter(h -> h instanceof Predator).count());
-        System.out.println("Grass: " + map.getMap().values().stream().filter(h -> h instanceof Grass).count());
     }
 
 
@@ -63,7 +72,6 @@ public class SimulationMapRenderer {
         } catch (Exception e) {
             System.out.println("Ошибка при очистке консоли: " + e.getMessage());
         }
-
     }
 
 }

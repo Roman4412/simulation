@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Random;
 
 public class GenerateResources implements Action {
+    //TODO интерфейс Generator
+    //TODO перенести генераторы в разные классы
     Random random = new Random();
 
     @Override
@@ -17,11 +19,9 @@ public class GenerateResources implements Action {
         long grassAmount = checkGrassAmount(map);
         long herbivoresAmount = checkHerbivoresAmount(map);
         if (grassAmount < 10) {
-            System.out.println("Grass amo: " + grassAmount);
             generateGrass(map, grassAmount);
         }
         if (herbivoresAmount < 5) {
-            System.out.println("Herbivores amo: " + herbivoresAmount);
             generateHerbivores(map, herbivoresAmount);
         }
     }
@@ -36,7 +36,6 @@ public class GenerateResources implements Action {
             map.setEntityToPos(position, new Herbivore(position));
             counter++;
         }
-        System.out.println(counter + " Herbivores generated");
     }
 
     private void generateGrass(WorldMap map, long amount) {
@@ -49,7 +48,6 @@ public class GenerateResources implements Action {
             map.setEntityToPos(position, new Grass(position));
             counter++;
         }
-        System.out.println(counter + " Grass generated");
     }
 
     private long checkGrassAmount(WorldMap map) {

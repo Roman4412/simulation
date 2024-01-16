@@ -4,34 +4,12 @@ import world_map.WorldMap;
 import java.util.List;
 
 public class Simulation {
-    /*
-    init:
-    create map
-    generate and setup:
-        generateHerbivores
-        generatePredators
-        generateRocks
-        generateTrees
-        generateGrass
-        generateLand
-
-
-    turn:
-    allMakeMove()
-    checkResources() {
-       generateGrass() if < 10
-       generateHerbivores() if < 10
-    }
-
-
-
-
-     */
     private long turn_counter = 0;
     private final WorldMap map;
     private final SimulationMapRenderer renderer;
     private final List<Action> initActions;
     private final List<Action> turnActions;
+    private boolean state;
 
     public Simulation(WorldMap map, SimulationMapRenderer renderer, List<Action> initActions, List<Action> turnActions) {
         this.map = map;
@@ -41,14 +19,14 @@ public class Simulation {
     }
 
     public void startSimulation() {
-
-        while (true) {
+        state = true;
+        while (state) {
             nextTurn();
         }
     }
 
     public void pauseSimulation() {
-
+        state =  false;
     }
 
     public void nextTurn() {

@@ -88,16 +88,16 @@ public abstract class Creature extends Entity {
 
     List<Position> findAvailableNeighborPositions(Set<Position> processed, Position pos, WorldMap map) {
         List<Position> neighborPositions = new ArrayList<>();
-        for (int i = pos.horizontal - speed; i <= pos.horizontal + speed; i++) {
-            for (int j = pos.vertical - speed; j <= pos.vertical + speed; j++) {
+        for (int i = pos.getHorizontal() - speed; i <= pos.getHorizontal() + speed; i++) {
+            for (int j = pos.getVertical() - speed; j <= pos.getVertical() + speed; j++) {
                 neighborPositions.add(new Position(i,j));
                 }
             }
 
         return neighborPositions.stream()
                 .filter(p -> !processed.contains(p)
-                        && (p.horizontal <= map.getSize()) && (p.horizontal > 0)
-                        && (p.vertical <= map.getSize()) && (p.vertical > 0)
+                        && (p.getHorizontal() <= map.getSize()) && (p.getHorizontal() > 0)
+                        && (p.getVertical() <= map.getSize()) && (p.getVertical() > 0)
                         && map.getMap().get(p) instanceof Land
                         || isFood(p, map))
                 .collect(Collectors.toList());

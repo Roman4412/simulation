@@ -5,6 +5,8 @@ import entities.*;
 import java.util.*;
 
 public class WorldMap {
+    //TODO перенести методы в интерфейс
+    // Land заменить на пустоту
     private final int size;
     private final List<Position> allPositions;
     private Map<Position, Entity> map;
@@ -45,8 +47,8 @@ public class WorldMap {
     }
 
     public static int findChebyshevDistance(Position start, Position target) {
-        return Math.max(Math.abs(start.horizontal - target.horizontal),
-                Math.abs(start.vertical - target.vertical));
+        return Math.max(Math.abs(start.getHorizontal() - target.getHorizontal()),
+                Math.abs(start.getVertical() - target.getVertical()));
     }
 
     public int getSize() {
