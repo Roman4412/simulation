@@ -10,6 +10,7 @@ public class Entity {
     public Entity(Position position) {
         this.position = position;
     }
+
     public void setPosition(Position position) {
         this.position = position;
     }

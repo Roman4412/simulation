@@ -4,33 +4,25 @@ package world_map;
 import java.util.Objects;
 
 public class Position {
-    private int horizontal;
-    private int vertical;
+    private final int x;
+    private final int y;
 
-    public Position(int horizontal, int vertical) {
-        this.horizontal = horizontal;
-        this.vertical = vertical;
+    public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public int getHorizontal() {
-        return horizontal;
+    public int getX() {
+        return x;
     }
 
-    public void setHorizontal(int horizontal) {
-        this.horizontal = horizontal;
-    }
-
-    public int getVertical() {
-        return vertical;
-    }
-
-    public void setVertical(int vertical) {
-        this.vertical = vertical;
+    public int getY() {
+        return y;
     }
 
     @Override
     public String toString() {
-        return horizontal + "," + vertical;
+        return x + "," + y;
     }
 
     @Override
@@ -38,11 +30,11 @@ public class Position {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
-        return horizontal == position.horizontal && vertical == position.vertical;
+        return x == position.x && y == position.y;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(horizontal, vertical);
+        return Objects.hash(x, y);
     }
 }

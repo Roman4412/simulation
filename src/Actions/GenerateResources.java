@@ -16,8 +16,8 @@ public class GenerateResources implements Action {
 
     @Override
     public void execute(WorldMap map) {
-        long grassAmount = checkGrassAmount(map);
-        long herbivoresAmount = checkHerbivoresAmount(map);
+        long grassAmount = map.getEntitiesAmount(Grass.class);
+        long herbivoresAmount = map.getEntitiesAmount(Herbivore.class);
         if (grassAmount < 10) {
             generateGrass(map, grassAmount);
         }
@@ -44,17 +44,5 @@ public class GenerateResources implements Action {
             Position position = availablePositions.get(random.nextInt(availablePositions.size()));
             map.setEntityToPos(position, new Grass(position));
         }
-    }
-
-    private long checkGrassAmount(WorldMap map) {
-        return map.getMap().values().stream()
-                .filter(value -> value instanceof Grass)
-                .count();
-    }
-
-    private long checkHerbivoresAmount(WorldMap map) {
-        return map.getMap().values().stream()
-                .filter(value -> value instanceof Herbivore)
-                .count();
     }
 }

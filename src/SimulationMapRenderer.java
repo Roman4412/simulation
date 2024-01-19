@@ -6,8 +6,6 @@ import java.util.Comparator;
 
 
 public class SimulationMapRenderer {
-    //TODO избавиться от if и дублирования
-    // хранить количество сущностей в переменных?
     private static final String PREDATOR = "\033[5;38;05;196m\u25A0";
     private static final String HERBIVORE = "\033[38;05;226m\u25A0";
     private static final String ROCK = "\033[38;05;242m\u25A0";
@@ -17,43 +15,15 @@ public class SimulationMapRenderer {
     private static final String RESET = "\033[0m";
     private static final String SEPARATOR = "  ";
 
+
     public void render(WorldMap map, long counter) {
         clearConsole();
         map.getMap().keySet().stream()
-                .sorted(Comparator.comparingInt(Position::getVertical).thenComparingInt(Position::getHorizontal))
+                .sorted(Comparator.comparingInt(Position::getY).thenComparingInt(Position::getX))
                 .forEach(p -> {
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 1) {
-                        System.out.print("    Turn: " + counter );
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 3) {
-                        System.out.print("     " + HERBIVORE + " Herbivores: " + map.getMap().values().stream().filter(h -> h instanceof Herbivore).count());
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 4) {
-                        System.out.print("     " + PREDATOR + " Predators: " + map.getMap().values().stream().filter(h -> h instanceof Predator).count());
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 5) {
-                        System.out.print("     " + GRASS + " Grass: " + map.getMap().values().stream().filter(h -> h instanceof Grass).count());
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 6) {
-                        System.out.print("     " + ROCK + " Rock: " + map.getMap().values().stream().filter(h -> h instanceof Rock).count());
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 7) {
-                        System.out.print("     " + TREE + " Tree: " + map.getMap().values().stream().filter(h -> h instanceof Tree).count());
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 10) {
-                        System.out.print("     Commands:");
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 11) {
-                        System.out.print("     s - start");
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 12) {
-                        System.out.print("     p - pause");
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 13) {
-                        System.out.print("     n - next turn");
-                    }
                     System.out.print(getSprite(map.getMap().get(p)) + SEPARATOR + RESET);
-                    if (p.getHorizontal() == map.getSize()) {
+                    if (p.getX() == map.getSize()) {
+                        printInfo(p.getY(), map, counter);
                         System.out.println();
                     }
                 });
@@ -76,6 +46,40 @@ public class SimulationMapRenderer {
                 return LAND;
             default:
                 return "?";
+        }
+    }
+    private void printInfo(int lineNum, WorldMap map, long counter) {
+        switch (lineNum) {
+            case 1:
+                System.out.print("    Turn: " + counter);
+                break;
+            case 3:
+                System.out.print("     " + HERBIVORE + " Herbivores: " + map.getEntitiesAmount(Herbivore.class));
+                break;
+            case 4:
+                System.out.print("     " + PREDATOR + " Predators: " + map.getEntitiesAmount(Predator.class));
+                break;
+            case 5:
+                System.out.print("     " + GRASS + " Grass: " + map.getEntitiesAmount(Grass.class));
+                break;
+            case 6:
+                System.out.print("     " + ROCK + " Rocks: " + map.getEntitiesAmount(Rock.class));
+                break;
+            case 7:
+                System.out.print("     " + TREE + " Trees: " + map.getEntitiesAmount(Tree.class));
+                break;
+            case 10:
+                System.out.print("     Commands:");
+                break;
+            case 11:
+                System.out.print("     s - start");
+                break;
+            case 12:
+                System.out.print("     p - pause:");
+                break;
+            case 13:
+                System.out.print("     n - next turn:");
+                break;
         }
     }
 

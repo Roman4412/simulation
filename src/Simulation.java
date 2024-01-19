@@ -33,7 +33,7 @@ public class Simulation {
     public void nextTurn() {
         if (turn_counter == 0) {
             initActions.forEach(action -> action.execute(map));
-            renderer.render(map, turn_counter);
+            renderer.render(map,turn_counter);
             turn_counter++;
             return;
         }
@@ -45,4 +45,5 @@ public class Simulation {
     public boolean isRunning() {
         return isRunning;
     }
+
 }
