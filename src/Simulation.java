@@ -9,7 +9,7 @@ public class Simulation {
     private final SimulationMapRenderer renderer;
     private final List<Action> initActions;
     private final List<Action> turnActions;
-    private boolean state;
+    private boolean isRunning;
 
     public Simulation(WorldMap map, SimulationMapRenderer renderer, List<Action> initActions, List<Action> turnActions) {
         this.map = map;
@@ -19,23 +19,30 @@ public class Simulation {
     }
 
     public void startSimulation() {
-        state = true;
-        while (state) {
+        isRunning = true;
+        while (isRunning) {
             nextTurn();
+            System.out.println(Thread.currentThread().getName());
         }
     }
 
     public void pauseSimulation() {
-        state =  false;
+        isRunning = false;
     }
 
     public void nextTurn() {
         if (turn_counter == 0) {
             initActions.forEach(action -> action.execute(map));
-            renderer.render(map);
+            renderer.render(map, turn_counter);
+            turn_counter++;
+            return;
         }
         turnActions.forEach(action -> action.execute(map));
-        renderer.render(map);
+        renderer.render(map, turn_counter);
         turn_counter++;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }

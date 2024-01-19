@@ -20,16 +20,15 @@ public abstract class Creature extends Entity {
     }
 
     public void makeMove(WorldMap map) {
-        //TODO redo cast to Deque
         Position food = findFood(map);
         if (!path.isEmpty() && food != null) {
-            int oldFoodCost = findChebyshevDistance(position,path.peekLast());
-            int newFoodCost = findChebyshevDistance(position,food);
-            if (newFoodCost < oldFoodCost) {
-                path = (Deque<Position>) findPath(map, food);
+            int oldDistance = findChebyshevDistance(position, path.peekLast());
+            int newDistance = findChebyshevDistance(position, food);
+            if (newDistance < oldDistance) {
+                path = findPath(map, food);
             }
         } else {
-            path = (Deque<Position>) findPath(map, food);
+            path = findPath(map, food);
         }
         Position posForMove = path.poll();
         if (isFood(posForMove, map)) {
@@ -43,30 +42,30 @@ public abstract class Creature extends Entity {
         return map.getMap().keySet().stream()
                 .filter(pos -> isFood(pos, map))
                 .min((pos1, pos2) -> {
-                    int maxForA = findChebyshevDistance(pos1,position);
-                    int maxForB = findChebyshevDistance(pos2,position);
+                    //TODO вынести дублирование в один Comparator
+                    int maxForA = findChebyshevDistance(pos1, position);
+                    int maxForB = findChebyshevDistance(pos2, position);
                     return maxForA - maxForB;
                 })
                 .orElse(null);
     }
 
 
-    Queue<Position> findPath(WorldMap map, Position food) {
+    Deque<Position> findPath(WorldMap map, Position food) {
         if (food == null) {
             Random random = new Random();
             List<Position> positions = findAvailableNeighborPositions(new HashSet<>(), position, map);
-            Queue<Position> randomPath = new ArrayDeque<>();
+            Deque<Position> randomPath = new ArrayDeque<>();
             randomPath.add(positions.get(random.nextInt(positions.size())));
             return randomPath;
         } else {
-            Queue<Position> pathToFood = new ArrayDeque<>();
+            Deque<Position> pathToFood = new ArrayDeque<>();
             Set<Position> processed = new HashSet<>();
             Queue<Position> open = new PriorityQueue<>((a, b) -> {
-                int maxForA = findChebyshevDistance(a,food);
-                int maxForB = findChebyshevDistance(b,food);
+                int maxForA = findChebyshevDistance(a, food);
+                int maxForB = findChebyshevDistance(b, food);
                 return maxForA - maxForB;
-            }
-            );
+            });
             open.add(position);
             while (!open.isEmpty()) {
                 Position pos = open.poll();
@@ -78,7 +77,6 @@ public abstract class Creature extends Entity {
                 }
                 processed.add(pos);
                 List<Position> availablePos = findAvailableNeighborPositions(processed, pos, map);
-                // open.clear();
                 processed.addAll(availablePos);
                 open.addAll(availablePos);
             }
@@ -90,9 +88,9 @@ public abstract class Creature extends Entity {
         List<Position> neighborPositions = new ArrayList<>();
         for (int i = pos.getHorizontal() - speed; i <= pos.getHorizontal() + speed; i++) {
             for (int j = pos.getVertical() - speed; j <= pos.getVertical() + speed; j++) {
-                neighborPositions.add(new Position(i,j));
-                }
+                neighborPositions.add(new Position(i, j));
             }
+        }
 
         return neighborPositions.stream()
                 .filter(p -> !processed.contains(p)
@@ -116,5 +114,4 @@ public abstract class Creature extends Entity {
     }
 
     abstract boolean isFood(Position pos, WorldMap map);
-
 }

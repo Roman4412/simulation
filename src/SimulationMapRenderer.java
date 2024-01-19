@@ -17,31 +17,45 @@ public class SimulationMapRenderer {
     private static final String RESET = "\033[0m";
     private static final String SEPARATOR = "  ";
 
-    public void render(WorldMap map) {
+    public void render(WorldMap map, long counter) {
         clearConsole();
         map.getMap().keySet().stream()
                 .sorted(Comparator.comparingInt(Position::getVertical).thenComparingInt(Position::getHorizontal))
                 .forEach(p -> {
                     if (p.getHorizontal() == map.getSize() && p.getVertical() == 1) {
-                        System.out.print("     " + HERBIVORE + " Herbivores: " + map.getMap().values().stream().filter(h -> h instanceof Herbivore).count());
-                    }
-                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 2) {
-                        System.out.print("     " + PREDATOR + " Predators: " + map.getMap().values().stream().filter(h -> h instanceof Predator).count());
+                        System.out.print("    Turn: " + counter );
                     }
                     if (p.getHorizontal() == map.getSize() && p.getVertical() == 3) {
-                        System.out.print("     " + GRASS + " Grass: " + map.getMap().values().stream().filter(h -> h instanceof Grass).count());
+                        System.out.print("     " + HERBIVORE + " Herbivores: " + map.getMap().values().stream().filter(h -> h instanceof Herbivore).count());
                     }
                     if (p.getHorizontal() == map.getSize() && p.getVertical() == 4) {
-                        System.out.print("     " + ROCK + " Rock: " + map.getMap().values().stream().filter(h -> h instanceof Rock).count());
+                        System.out.print("     " + PREDATOR + " Predators: " + map.getMap().values().stream().filter(h -> h instanceof Predator).count());
                     }
                     if (p.getHorizontal() == map.getSize() && p.getVertical() == 5) {
+                        System.out.print("     " + GRASS + " Grass: " + map.getMap().values().stream().filter(h -> h instanceof Grass).count());
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 6) {
+                        System.out.print("     " + ROCK + " Rock: " + map.getMap().values().stream().filter(h -> h instanceof Rock).count());
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 7) {
                         System.out.print("     " + TREE + " Tree: " + map.getMap().values().stream().filter(h -> h instanceof Tree).count());
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 10) {
+                        System.out.print("     Commands:");
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 11) {
+                        System.out.print("     s - start");
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 12) {
+                        System.out.print("     p - pause");
+                    }
+                    if (p.getHorizontal() == map.getSize() && p.getVertical() == 13) {
+                        System.out.print("     n - next turn");
                     }
                     System.out.print(getSprite(map.getMap().get(p)) + SEPARATOR + RESET);
                     if (p.getHorizontal() == map.getSize()) {
                         System.out.println();
                     }
-
                 });
     }
 
@@ -67,11 +81,10 @@ public class SimulationMapRenderer {
 
     private void clearConsole() {
         try {
-            Thread.sleep(1200);
+            Thread.sleep(1000);
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
-            System.out.println("Ошибка при очистке консоли: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 }

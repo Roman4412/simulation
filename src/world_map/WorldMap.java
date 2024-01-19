@@ -6,7 +6,6 @@ import java.util.*;
 
 public class WorldMap {
     //TODO перенести методы в интерфейс
-    // Land заменить на пустоту
     private final int size;
     private final List<Position> allPositions;
     private Map<Position, Entity> map;
@@ -34,7 +33,7 @@ public class WorldMap {
     }
 
     public void setEntityToPos(Position pos, Entity e) {
-        e.changePosition(pos);
+        e.setPosition(pos);
         map.put(pos, e);
     }
 

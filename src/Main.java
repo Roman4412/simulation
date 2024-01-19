@@ -9,16 +9,15 @@ public class Main {
         WorldMap map = new WorldMap(30);
         SimulationMapRenderer renderer = new SimulationMapRenderer();
         List<Action> initAction = List.of(
-                    new InitHerbivores(10),
+                new InitHerbivores(10),
                 new InitPredators(2),
                 new InitGrass(30),
                 new InitTrees(30),
                 new InitRocks(30),
                 new InitLand());
         List<Action> turnAction = List.of(new AllMakeMove(), new GenerateResources());
-
         Simulation simulation = new Simulation(map, renderer, initAction, turnAction);
-        simulation.startSimulation();
-
+        SimulationCommandHandler handler = new SimulationCommandHandler(simulation);
+        handler.startProcessing();
     }
 }

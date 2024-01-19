@@ -3,8 +3,6 @@ package entities;
 import world_map.Position;
 import world_map.WorldMap;
 
-import java.util.function.Predicate;
-
 public class Herbivore extends Creature {
     private static final int HEALTH = 10;
     private static final int SPEED = 1;
