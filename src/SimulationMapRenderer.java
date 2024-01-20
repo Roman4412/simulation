@@ -48,6 +48,7 @@ public class SimulationMapRenderer {
                 return "?";
         }
     }
+
     private void printInfo(int lineNum, WorldMap map, long counter) {
         switch (lineNum) {
             case 1:

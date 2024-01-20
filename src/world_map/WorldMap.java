@@ -6,21 +6,17 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class WorldMap {
-    //TODO перенести методы в интерфейс
     private final int size;
-    private final List<Position> allPositions;
-    private Map<Position, Entity> map;
+    private final Map<Position, Entity> map;
 
     public WorldMap(int size) {
         this.size = size;
-        this.map = new HashMap<>();
-        this.allPositions = calculateAllPositions();
-
+        this.map = initPositions();
     }
 
-    public List<Position> calculateAllPositions() {
+    public Map<Position,Entity> initPositions() {
         int totalCells = size * size;
-        List<Position> positions = new ArrayList<>();
+        Map<Position, Entity> map = new HashMap<>();
         int counterX = 1;
         int counterY = 1;
         for (int x = 0; x < totalCells; x++) {
@@ -28,9 +24,9 @@ public class WorldMap {
                 counterX++;
                 counterY = 1;
             }
-            positions.add(new Position(counterX, counterY++));
+            map.put(new Position(counterX, counterY++),null);
         }
-        return positions;
+        return map;
     }
 
     public void setEntityToPos(Position pos, Entity e) {
@@ -39,11 +35,7 @@ public class WorldMap {
     }
 
     public Map<Position, Entity> getMap() {
-        return map;
-    }
-
-    public List<Position> getAllPositions() {
-        return allPositions;
+        return Collections.unmodifiableMap(map);
     }
 
     public static int findChebyshevDistance(Position start, Position target) {
@@ -74,5 +66,4 @@ public class WorldMap {
                 return -1;
         }
     }
-
 }

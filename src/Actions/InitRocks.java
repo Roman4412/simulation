@@ -1,10 +1,13 @@
 package Actions;
 
+import entities.Land;
 import entities.Rock;
 import world_map.Position;
 import world_map.WorldMap;
 
-public class InitRocks extends InitAction implements Action{
+import java.util.List;
+
+public class InitRocks extends Initializing {
     public InitRocks(int amount) {
         this.amount = amount;
     }
@@ -12,9 +15,11 @@ public class InitRocks extends InitAction implements Action{
     @Override
     public void execute(WorldMap map) {
         while (counter < amount) {
-            Position position = map.getAllPositions().get(random.nextInt(map.getAllPositions().size()));
-            map.getMap().put(position, new Rock(position));
-            map.getAllPositions().remove(position);
+            List<Position> availablePositions = map.getMap().keySet().stream()
+                    .filter(key -> map.getMap().get(key) instanceof Land)
+                    .toList();
+            Position randomPos = availablePositions.get(random.nextInt(availablePositions.size()));
+            map.setEntityToPos(randomPos, new Rock(randomPos));
             counter++;
         }
     }

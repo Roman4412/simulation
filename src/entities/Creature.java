@@ -42,7 +42,6 @@ public abstract class Creature extends Entity {
         return map.getMap().keySet().stream()
                 .filter(pos -> isFood(pos, map))
                 .min((pos1, pos2) -> {
-                    //TODO вынести дублирование в один Comparator
                     int maxForA = findChebyshevDistance(pos1, position);
                     int maxForB = findChebyshevDistance(pos2, position);
                     return maxForA - maxForB;
@@ -115,3 +114,4 @@ public abstract class Creature extends Entity {
 
     abstract boolean isFood(Position pos, WorldMap map);
 }
+
