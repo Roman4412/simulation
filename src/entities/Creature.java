@@ -10,7 +10,7 @@ import static world_map.WorldMap.findChebyshevDistance;
 
 public abstract class Creature extends Entity {
     protected int speed;
-    Deque<Position> path = new ArrayDeque<>();
+    protected Deque<Position> path = new ArrayDeque<>();
 
     public Creature(Position position, int speed) {
         super(position);
@@ -40,7 +40,7 @@ public abstract class Creature extends Entity {
         }
     }
 
-    Position findFood(WorldMap map) {
+    private Position findFood(WorldMap map) {
         return map.getMap().keySet().stream()
                 .filter(pos -> isFood(pos, map))
                 .min((pos1, pos2) -> {
@@ -52,7 +52,7 @@ public abstract class Creature extends Entity {
     }
 
 
-    Deque<Position> findPath(WorldMap map, Position food) {
+    private Deque<Position> findPath(WorldMap map, Position food) {
         if (food == null) {
             Random random = new Random();
             List<Position> positions = findAvailableNeighborPositions(new HashSet<>(), position, map);
@@ -85,7 +85,7 @@ public abstract class Creature extends Entity {
         }
     }
 
-    List<Position> findAvailableNeighborPositions(Set<Position> processed, Position pos, WorldMap map) {
+    private List<Position> findAvailableNeighborPositions(Set<Position> processed, Position pos, WorldMap map) {
         List<Position> neighborPositions = new ArrayList<>();
         for (int i = pos.getX() - speed; i <= pos.getX() + speed; i++) {
             for (int j = pos.getY() - speed; j <= pos.getY() + speed; j++) {
@@ -102,13 +102,13 @@ public abstract class Creature extends Entity {
                 .collect(Collectors.toList());
     }
 
-    void makeStep(WorldMap map, Position target) {
+    private void makeStep(WorldMap map, Position target) {
         Entity e2 = map.getMap().get(target);
         map.setEntityToPos(position, e2);
         map.setEntityToPos(target, this);
     }
 
-    void eat(WorldMap map, Position target) {
+    private void eat(WorldMap map, Position target) {
         Position tmp = position;
         map.setEntityToPos(target, this);
         map.setEntityToPos(tmp, new Land(tmp));

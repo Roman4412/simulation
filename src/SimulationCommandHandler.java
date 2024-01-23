@@ -7,8 +7,8 @@ public class SimulationCommandHandler {
     private static final String COMMAND_FAIL_MESSAGE = "already running";
     private static final String UNKNOWN_COMMAND_MESSAGE = "unknown command";
     private static final String START_MESSAGE = "print \"s\" and press ENTER to start";
-    Scanner scanner = new Scanner(System.in);
-    Simulation simulation;
+    private final Scanner scanner = new Scanner(System.in);
+    private final Simulation simulation;
 
     public SimulationCommandHandler(Simulation simulation) {
         this.simulation = simulation;
@@ -24,7 +24,7 @@ public class SimulationCommandHandler {
                         if (simulation.isRunning()) {
                             System.out.println(COMMAND_FAIL_MESSAGE);
                         } else {
-                            Thread t = new Thread(() -> simulation.startSimulation());
+                            Thread t = new Thread(simulation::startSimulation);
                             t.start();
                         }
                         break;

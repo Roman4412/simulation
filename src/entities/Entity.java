@@ -5,7 +5,7 @@ import world_map.Position;
 import java.util.Objects;
 
 public class Entity {
-    Position position;
+    protected Position position;
 
     public Entity(Position position) {
         this.position = position;
