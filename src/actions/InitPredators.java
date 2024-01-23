@@ -1,15 +1,17 @@
-package Actions;
+package actions;
 
 import entities.Land;
-import entities.Tree;
+import entities.Predator;
 import world_map.Position;
 import world_map.WorldMap;
 
 import java.util.List;
 
-public class InitTrees extends Initializing {
-    public InitTrees(int amount) {
+public class InitPredators extends Initializing {
+    private final int speed;
+    public InitPredators(int amount, int speed) {
         this.amount = amount;
+        this.speed = speed;
     }
 
     @Override
@@ -19,7 +21,7 @@ public class InitTrees extends Initializing {
                     .filter(key -> map.getMap().get(key) instanceof Land)
                     .toList();
             Position randomPos = availablePositions.get(random.nextInt(availablePositions.size()));
-            map.setEntityToPos(randomPos, new Tree(randomPos));
+            map.setEntityToPos(randomPos, new Predator(randomPos, speed));
             counter++;
         }
     }

@@ -9,17 +9,25 @@ import java.util.stream.Collectors;
 import static world_map.WorldMap.findChebyshevDistance;
 
 public abstract class Creature extends Entity {
-    final int health;
-    final int speed;
+    protected int speed;
     Deque<Position> path = new ArrayDeque<>();
 
-    public Creature(int health, int speed, Position position) {
+    public Creature(Position position, int speed) {
         super(position);
-        this.health = health;
         this.speed = speed;
     }
 
     public void makeMove(WorldMap map) {
+        findActualPath(map);
+        Position posForMove = path.poll();
+        if (isFood(posForMove, map)) {
+            eat(map, posForMove);
+        } else {
+            makeStep(map, posForMove);
+        }
+    }
+
+    private void findActualPath(WorldMap map) {
         Position food = findFood(map);
         if (!path.isEmpty() && food != null) {
             int oldDistance = findChebyshevDistance(position, path.peekLast());
@@ -29,12 +37,6 @@ public abstract class Creature extends Entity {
             }
         } else {
             path = findPath(map, food);
-        }
-        Position posForMove = path.poll();
-        if (isFood(posForMove, map)) {
-            eat(map, posForMove);
-        } else {
-            makeStep(map, posForMove);
         }
     }
 
@@ -114,4 +116,3 @@ public abstract class Creature extends Entity {
 
     abstract boolean isFood(Position pos, WorldMap map);
 }
-

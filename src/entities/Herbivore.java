@@ -4,10 +4,9 @@ import world_map.Position;
 import world_map.WorldMap;
 
 public class Herbivore extends Creature {
-    private static final int HEALTH = 10;
-    private static final int SPEED = 1;
-    public Herbivore(Position pos) {
-        super(HEALTH, SPEED, pos);
+
+    public Herbivore(Position pos, int speed) {
+        super(pos, speed);
     }
 
     @Override

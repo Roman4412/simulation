@@ -1,16 +1,15 @@
-package Actions;
+package actions;
 
-import entities.Grass;
 import entities.Land;
+import entities.Rock;
 import world_map.Position;
 import world_map.WorldMap;
 
 import java.util.List;
 
-public class InitGrass extends Initializing {
-
-    public InitGrass(int amount) {
-        super(amount);
+public class InitRocks extends Initializing {
+    public InitRocks(int amount) {
+        this.amount = amount;
     }
 
     @Override
@@ -20,7 +19,7 @@ public class InitGrass extends Initializing {
                     .filter(key -> map.getMap().get(key) instanceof Land)
                     .toList();
             Position randomPos = availablePositions.get(random.nextInt(availablePositions.size()));
-            map.setEntityToPos(randomPos, new Grass(randomPos));
+            map.setEntityToPos(randomPos, new Rock(randomPos));
             counter++;
         }
     }

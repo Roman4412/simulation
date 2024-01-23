@@ -1,4 +1,4 @@
-package Actions;
+package actions;
 
 public abstract class Generating implements Action {
     int minAmount;

@@ -1,4 +1,4 @@
-import Actions.Action;
+import actions.Action;
 import world_map.WorldMap;
 
 import java.util.List;
@@ -22,7 +22,6 @@ public class Simulation {
         isRunning = true;
         while (isRunning) {
             nextTurn();
-            System.out.println(Thread.currentThread().getName());
         }
     }
 
@@ -45,5 +44,4 @@ public class Simulation {
     public boolean isRunning() {
         return isRunning;
     }
-
 }

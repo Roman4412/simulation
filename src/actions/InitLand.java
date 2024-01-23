@@ -1,4 +1,4 @@
-package Actions;
+package actions;
 
 import entities.Land;
 import world_map.WorldMap;

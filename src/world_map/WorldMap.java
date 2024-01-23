@@ -14,17 +14,11 @@ public class WorldMap {
         this.map = initPositions();
     }
 
-    public Map<Position,Entity> initPositions() {
-        int totalCells = size * size;
+    public Map<Position, Entity> initPositions() {
         Map<Position, Entity> map = new HashMap<>();
-        int counterX = 1;
-        int counterY = 1;
-        for (int x = 0; x < totalCells; x++) {
-            if (counterY > size) {
-                counterX++;
-                counterY = 1;
-            }
-            map.put(new Position(counterX, counterY++),null);
+        for (int x = 1; x <= size; x++) {
+            for (int y = 1; y <= size; y++)
+                map.put(new Position(x, y), null);
         }
         return map;
     }

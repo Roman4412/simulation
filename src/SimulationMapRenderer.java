@@ -6,6 +6,7 @@ import java.util.Comparator;
 
 
 public class SimulationMapRenderer {
+    private final int duration;
     private static final String PREDATOR = "\033[5;38;05;196m\u25A0";
     private static final String HERBIVORE = "\033[38;05;226m\u25A0";
     private static final String ROCK = "\033[38;05;242m\u25A0";
@@ -14,8 +15,6 @@ public class SimulationMapRenderer {
     private static final String LAND = " ";
     private static final String RESET = "\033[0m";
     private static final String SEPARATOR = "  ";
-
-
     public void render(WorldMap map, long counter) {
         clearConsole();
         map.getMap().keySet().stream()
@@ -29,6 +28,9 @@ public class SimulationMapRenderer {
                 });
     }
 
+    public SimulationMapRenderer(int duration) {
+        this.duration = duration;
+    }
 
     private String getSprite(Entity entity) {
         switch (entity.getClass().getSimpleName()) {
@@ -52,22 +54,22 @@ public class SimulationMapRenderer {
     private void printInfo(int lineNum, WorldMap map, long counter) {
         switch (lineNum) {
             case 1:
-                System.out.print("    Turn: " + counter);
+                System.out.printf("    Turn: %d", counter);
                 break;
             case 3:
-                System.out.print("     " + HERBIVORE + " Herbivores: " + map.getEntitiesAmount(Herbivore.class));
+                System.out.printf("     %s Herbivores: %d", HERBIVORE, map.getEntitiesAmount(Herbivore.class));
                 break;
             case 4:
-                System.out.print("     " + PREDATOR + " Predators: " + map.getEntitiesAmount(Predator.class));
+                System.out.printf("     %s Predators: %d", PREDATOR, map.getEntitiesAmount(Predator.class));
                 break;
             case 5:
-                System.out.print("     " + GRASS + " Grass: " + map.getEntitiesAmount(Grass.class));
+                System.out.printf("     %s Grass: %d", GRASS, map.getEntitiesAmount(Grass.class));
                 break;
             case 6:
-                System.out.print("     " + ROCK + " Rocks: " + map.getEntitiesAmount(Rock.class));
+                System.out.printf("     %s Rock: %d", ROCK, map.getEntitiesAmount(Rock.class));
                 break;
             case 7:
-                System.out.print("     " + TREE + " Trees: " + map.getEntitiesAmount(Tree.class));
+                System.out.printf("     %s Tree: %d", TREE, map.getEntitiesAmount(Tree.class));
                 break;
             case 10:
                 System.out.print("     Commands:");
@@ -86,7 +88,7 @@ public class SimulationMapRenderer {
 
     private void clearConsole() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(duration);
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
             e.printStackTrace();

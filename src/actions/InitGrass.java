@@ -1,15 +1,15 @@
-package Actions;
+package actions;
 
-import entities.Herbivore;
+import entities.Grass;
 import entities.Land;
 import world_map.Position;
 import world_map.WorldMap;
 
 import java.util.List;
 
-public class InitHerbivores extends Initializing {
+public class InitGrass extends Initializing {
 
-    public InitHerbivores(int amount) {
+    public InitGrass(int amount) {
         super(amount);
     }
 
@@ -20,7 +20,7 @@ public class InitHerbivores extends Initializing {
                     .filter(key -> map.getMap().get(key) instanceof Land)
                     .toList();
             Position randomPos = availablePositions.get(random.nextInt(availablePositions.size()));
-            map.setEntityToPos(randomPos, new Herbivore(randomPos));
+            map.setEntityToPos(randomPos, new Grass(randomPos));
             counter++;
         }
     }

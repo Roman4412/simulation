@@ -1,4 +1,4 @@
-package Actions;
+package actions;
 
 import entities.Grass;
 import world_map.WorldMap;
