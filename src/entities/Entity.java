@@ -22,7 +22,7 @@ public class Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (Objects.isNull(o) || getClass() != o.getClass()) return false;
         Entity entity = (Entity) o;
         return Objects.equals(position, entity.position);
     }
