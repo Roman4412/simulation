@@ -3,7 +3,7 @@
 ### Creatures
 - The objects of the natural world include predators and herbivores. 
 Their goal is to search for food and find the shortest path to it, bypassing obstacles. 
-- The logic of the creatures' movement is based on the A* algorithm. 
+- The logic of the creatures movement is based on the A* algorithm. 
 - When the population of herbivores is reduced to a certain limit, new individuals are generated.
 
 ### Static Objects
