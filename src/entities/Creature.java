@@ -1,6 +1,6 @@
 package entities;
 
-import world_map.AStarPathfinding;
+import pathfinding_algorithms.AStarPathfinding;
 import world_map.Position;
 import world_map.WorldMap;
 

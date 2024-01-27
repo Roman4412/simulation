@@ -1,7 +1,9 @@
-package world_map;
+package pathfinding_algorithms;
 
 import entities.Creature;
 import entities.Land;
+import world_map.Position;
+import world_map.WorldMap;
 
 import java.util.*;
 
@@ -72,12 +74,12 @@ public class AStarPathfinding {
 
     private List<Position> findAvailableNeighborPositions(Set<Position> processed, Position pos, WorldMap map, Creature creature) {
         List<Position> neighborPositions = new ArrayList<>();
-        for (int i = pos.getX() - creature.getSpeed(); i <= pos.getX() + creature.getSpeed(); i++) {
-            for (int j = pos.getY() - creature.getSpeed(); j <= pos.getY() + creature.getSpeed(); j++) {
+        for (int i = pos.x() - creature.getSpeed(); i <= pos.x() + creature.getSpeed(); i++) {
+            for (int j = pos.y() - creature.getSpeed(); j <= pos.y() + creature.getSpeed(); j++) {
                 Position p = new Position(i, j);
                 if (!processed.contains(p)
-                        && (p.getX() <= map.getSize()) && (p.getX() > 0)
-                        && (p.getY() <= map.getSize()) && (p.getY() > 0)
+                        && (p.x() <= map.getSize()) && (p.x() > 0)
+                        && (p.y() <= map.getSize()) && (p.y() > 0)
                         && map.getMap().get(p) instanceof Land
                         || creature.isFood(p, map)
                 )

@@ -18,11 +18,11 @@ public class SimulationMapRenderer {
     public void render(WorldMap map, long counter) {
         clearConsole();
         map.getMap().keySet().stream()
-                .sorted(Comparator.comparingInt(Position::getY).thenComparingInt(Position::getX))
+                .sorted(Comparator.comparingInt(Position::y).thenComparingInt(Position::x))
                 .forEach(p -> {
                     System.out.print(getSprite(map.getMap().get(p)) + SEPARATOR + RESET);
-                    if (p.getX() == map.getSize()) {
-                        printInfo(p.getY(), map, counter);
+                    if (p.x() == map.getSize()) {
+                        printInfo(p.y(), map, counter);
                         System.out.println();
                     }
                 });
@@ -82,6 +82,9 @@ public class SimulationMapRenderer {
                 break;
             case 13:
                 System.out.print("     n - next turn:");
+                break;
+            case 14:
+                System.out.print("     e - exit:");
                 break;
         }
     }

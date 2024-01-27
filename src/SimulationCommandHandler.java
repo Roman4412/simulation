@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class SimulationCommandHandler {
+    private static final String EXIT_COMMAND = "e";
     private static final String START_COMMAND = "s";
     private static final String PAUSE_COMMAND = "p";
     private static final String NEXT_TURN_COMMAND = "n";
@@ -15,8 +16,9 @@ public class SimulationCommandHandler {
     }
 
     public void startProcessing() {
+        boolean isProcessing = true;
         System.out.println(START_MESSAGE);
-        while (true) {
+        while (isProcessing) {
             if (scanner.hasNextLine()) {
                 String in = scanner.nextLine().trim();
                 switch (in) {
@@ -37,6 +39,11 @@ public class SimulationCommandHandler {
                         } else {
                             simulation.nextTurn();
                         }
+                        break;
+
+                    case EXIT_COMMAND:
+                        simulation.pauseSimulation();
+                        isProcessing = false;
                         break;
                     default:
                         System.out.println(UNKNOWN_COMMAND_MESSAGE);
