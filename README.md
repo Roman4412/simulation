@@ -26,7 +26,7 @@ Their goal is to search for food and find the shortest path to it, bypassing obs
   ![#078C03](https://placehold.it/15/078C03/000000?text=) - trees
 
 
-### Available commands:
+### Available Commands:
 
 
   `s` - start the simulation
