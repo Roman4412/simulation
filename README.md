@@ -34,6 +34,8 @@ Their goal is to search for food and find the shortest path to it, bypassing obs
   `p` - stop the simulation
 
   `n` - perform a single iteration
+  
+  `e` - exit
 
 
 ## Application Launch
