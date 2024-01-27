@@ -13,17 +13,6 @@ Their goal is to search for food and find the shortest path to it, bypassing obs
 ## User Interface and Display
 ![Симуляция](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGNtNTI0azYxN2Vxam94cDUwaHU2cWdjczhndDZuY3Q1bXJ0NnB4OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/UnStB2OgBXCNKH8ebL/giphy.gif)
 
-### Available commands:
-
-
-  `s` - start the simulation
-
-  `p` - stop the simulation
-
-  `n` - perform a single iteration
-
-
-
 ### Display of Entities:
 
   ![#F2E205](https://placehold.it/15/F2E205/000000?text=) - herbivores
@@ -36,6 +25,15 @@ Their goal is to search for food and find the shortest path to it, bypassing obs
 
   ![#078C03](https://placehold.it/15/078C03/000000?text=) - trees
 
+
+### Available commands:
+
+
+  `s` - start the simulation
+
+  `p` - stop the simulation
+
+  `n` - perform a single iteration
 
 
 ## Application Launch
