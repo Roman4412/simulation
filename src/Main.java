@@ -1,6 +1,4 @@
 import actions.*;
-import entities.Creature;
-import world_map.Position;
 import world_map.WorldMap;
 
 import java.util.List;

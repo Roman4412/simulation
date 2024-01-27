@@ -33,8 +33,8 @@ public class WorldMap {
     }
 
     public static int findChebyshevDistance(Position start, Position target) {
-        return Math.max(Math.abs(start.getX() - target.getX()),
-                Math.abs(start.getY() - target.getY()));
+        return Math.max(Math.abs(start.x() - target.x()),
+                Math.abs(start.y() - target.y()));
     }
 
     public int getSize() {
