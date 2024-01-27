@@ -45,7 +45,7 @@ Their goal is to search for food and find the shortest path to it, bypassing obs
   2. Download the repository and unzip it.
   3. Launch the command line.
   4. Prepare the console using the command `chcp 65001`.
-  5. Navigate to the project root using the command `cd path to the root`.
+  5. Navigate to the project root using the command `cd path_to_the_root`.
   6. Compile the program using the command `javac Main.java`.
   7. Run the program using the command `java Main`.
 
