@@ -9,7 +9,7 @@ import java.util.*;
 public abstract class Creature extends Entity {
     protected int speed;
     protected Deque<Position> path = new ArrayDeque<>();
-    AStarPathfinding AStarPathfinding = new AStarPathfinding();
+    AStarPathfinding aStarPathfinding = new AStarPathfinding();
 
     public Creature(Position position, int speed) {
         super(position);
@@ -19,7 +19,7 @@ public abstract class Creature extends Entity {
     public abstract boolean isFood(Position pos, WorldMap map);
 
     public void makeMove(WorldMap map) {
-        path = AStarPathfinding.findActualPath(map, this);
+        path = aStarPathfinding.findActualPath(map, this);
         Position posForMove = path.poll();
         if (isFood(posForMove, map)) {
             eat(map, posForMove);
