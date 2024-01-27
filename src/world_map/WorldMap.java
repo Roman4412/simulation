@@ -3,141 +3,61 @@ package world_map;
 import entities.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class WorldMap {
-    private final List<Position> allPositions;
-    private Map<Position, Entity> map;
     private final int size;
-    /*
-    setPred()
-    setHerb()
-    setGras()
-    setBarriers()
-    */
+    private final Map<Position, Entity> map;
 
     public WorldMap(int size) {
-        this.allPositions = calculateAllPositions(size);
-        this.map = new HashMap<>();
         this.size = size;
-
+        this.map = initPositions();
     }
 
-    public List calculateAllPositions(int size) {
-        List<Position> positions = new ArrayList<>();
-        int counterX = 1;
-        int counterY = 1;
-        for (int x = 0; x < size * size; x++) {
-            if (counterY > size) {
-                counterX++;
-                counterY = 1;
-            }
-            positions.add(new Position(counterX, counterY++));
+    public Map<Position, Entity> initPositions() {
+        Map<Position, Entity> map = new HashMap<>();
+        for (int x = 1; x <= size; x++) {
+            for (int y = 1; y <= size; y++)
+                map.put(new Position(x, y), null);
         }
-        return positions;
+        return map;
     }
 
-    Random random = new Random();
-
-    public void setEntities(int predators, int herbivores, int grass, int rocks, int trees) {
-        int sum = predators+herbivores+grass+rocks+trees;
-        setPredator(predators);
-        setHerbivore(herbivores);
-        setGrass(grass);
-        setRock(rocks);
-        setTree(trees);
-        setLand(size*size - sum);
-    }
-
-    public void setHerbivore(int amount) {
-        int count = 0;
-        while (count < amount) {
-            Position position = allPositions.get(random.nextInt(allPositions.size()));
-            if (!map.containsKey(position)) {
-                map.put(position, new Herbivore(position));
-                allPositions.remove(position);
-                count++;
-            }
-        }
-    }
-
-    public void setLand(int amount) {
-        int count = 0;
-        while (count < amount) {
-            Position position = allPositions.get(random.nextInt(allPositions.size()));
-            if (!map.containsKey(position)) {
-                map.put(position, new Land(position));
-                allPositions.remove(position);
-                count++;
-            }
-        }
-    }
-
-    public void setPredator(int amount) {
-        int count = 0;
-        while (count < amount) {
-            Position position = allPositions.get(random.nextInt(allPositions.size()));
-            if (!map.containsKey(position)) {
-                map.put(position, new Predator(position));
-                allPositions.remove(position);
-                count++;
-            }
-        }
-    }
-
-    public void setGrass(int amount) {
-        int count = 0;
-        while (count < amount) {
-            Position position = allPositions.get(random.nextInt(allPositions.size()));
-            if (!map.containsKey(position)) {
-                map.put(position, new Grass(position));
-                allPositions.remove(position);
-                count++;
-            }
-        }
-    }
-
-    public void setTree(int amount) {
-        int count = 0;
-        while (count < amount) {
-            Position position = allPositions.get(random.nextInt(allPositions.size()));
-            if (!map.containsKey(position)) {
-                map.put(position, new Tree(position));
-                allPositions.remove(position);
-                count++;
-            }
-        }
-    }
-
-    public void setRock(int amount) {
-        int count = 0;
-        while (count < amount) {
-            Position position = allPositions.get(random.nextInt(allPositions.size()));
-            if (!map.containsKey(position)) {
-                map.put(position, new Rock(position));
-                allPositions.remove(position);
-                count++;
-            }
-        }
+    public void setEntityToPos(Position pos, Entity e) {
+        e.setPosition(pos);
+        map.put(pos, e);
     }
 
     public Map<Position, Entity> getMap() {
-        return map;
+        return Collections.unmodifiableMap(map);
     }
-    public Entity getEntityFromPosition(Position pos)
-    {
-        return map.get(pos);
-    }
-    public void setEntityToPos(Position pos, Herbivore h) {
-        map.put(pos, h);
-    }
-    public void setEntityToPos(Position pos, Grass g) {
-        map.put(pos, g);
-    }
-    public List<Position> getAllPositions() {
-        return allPositions;
+
+    public static int findChebyshevDistance(Position start, Position target) {
+        return Math.max(Math.abs(start.getX() - target.getX()),
+                Math.abs(start.getY() - target.getY()));
     }
 
     public int getSize() {
         return size;
+    }
+
+    public long getEntitiesAmount(Class<? extends Entity> type) {
+        Stream<Entity> entityStream = map.values().stream();
+        switch (type.getSimpleName()) {
+            case "Predator":
+                return entityStream.filter(h -> h instanceof Predator).count();
+            case "Herbivore":
+                return entityStream.filter(h -> h instanceof Herbivore).count();
+            case "Rock":
+                return entityStream.filter(h -> h instanceof Rock).count();
+            case "Grass":
+                return entityStream.filter(h -> h instanceof Grass).count();
+            case "Tree":
+                return entityStream.filter(h -> h instanceof Tree).count();
+            case "Land":
+                return entityStream.filter(h -> h instanceof Land).count();
+            default:
+                return -1;
+        }
     }
 }

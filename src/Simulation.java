@@ -1,27 +1,17 @@
+import actions.Action;
 import world_map.WorldMap;
 
+import java.util.List;
+
 public class Simulation {
-    /*
-    init:
-    setup creatures
-    setup static obj / land, rock. tree, grass
-
-    turn:
-    creatures move
-    generate grass
-    delete grass/herb
-
-
-
-
-     */
     private long turn_counter = 0;
     private final WorldMap map;
-    private final Renderer renderer;
-    private final Actions[] initActions;
-    private final Actions[] turnActions;
+    private final SimulationMapRenderer renderer;
+    private final List<Action> initActions;
+    private final List<Action> turnActions;
+    private boolean isRunning;
 
-    public Simulation(WorldMap map, Renderer renderer, Actions[] initActions, Actions[] turnActions) {
+    public Simulation(WorldMap map, SimulationMapRenderer renderer, List<Action> initActions, List<Action> turnActions) {
         this.map = map;
         this.renderer = renderer;
         this.initActions = initActions;
@@ -29,14 +19,29 @@ public class Simulation {
     }
 
     public void startSimulation() {
-
+        isRunning = true;
+        while (isRunning) {
+            nextTurn();
+        }
     }
 
     public void pauseSimulation() {
-
+        isRunning = false;
     }
 
     public void nextTurn() {
+        if (turn_counter == 0) {
+            initActions.forEach(action -> action.execute(map));
+            renderer.render(map,turn_counter);
+            turn_counter++;
+            return;
+        }
+        turnActions.forEach(action -> action.execute(map));
+        renderer.render(map, turn_counter);
+        turn_counter++;
+    }
 
+    public boolean isRunning() {
+        return isRunning;
     }
 }
