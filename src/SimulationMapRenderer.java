@@ -15,6 +15,12 @@ public class SimulationMapRenderer {
     private static final String LAND = " ";
     private static final String RESET = "\033[0m";
     private static final String SEPARATOR = "  ";
+
+
+    public SimulationMapRenderer(int duration) {
+        this.duration = duration;
+    }
+
     public void render(WorldMap map, long counter) {
         clearConsole();
         map.getMap().keySet().stream()
@@ -26,10 +32,6 @@ public class SimulationMapRenderer {
                         System.out.println();
                     }
                 });
-    }
-
-    public SimulationMapRenderer(int duration) {
-        this.duration = duration;
     }
 
     private String getSprite(Entity entity) {
