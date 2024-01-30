@@ -41,7 +41,7 @@ Their goal is to search for food and find the shortest path to it, bypassing obs
 ## Application Launch
   To launch the application, you need to:
 
-  1. Install JDK 21 if it is not installed.
+  1. Install JDK 17 if it is not installed.
   2. Download the repository and unzip it.
   3. Launch the command line.
   4. Prepare the console using the command `chcp 65001`.
@@ -55,7 +55,7 @@ To practice and reinforce object-oriented programming skills.
 Technical specification taken from this course https://zhukovsd.github.io/java-backend-learning-course/
 
 ## Technologies
-The project is developed in Java 21.
+The project is developed in Java 17.
 
 ## Project Status
 The project is on hold indefinitely.
